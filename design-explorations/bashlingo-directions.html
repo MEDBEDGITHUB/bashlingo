@@ -1,0 +1,354 @@
+<!-- Bashlingo: четыре направления главного экрана. Источник: согласованный бриф чата и ТЗ. 2026-11-13. -->
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bashlingo — выбираем направление</title><style>
+    
+    :root {
+      --brand-50: #ecebf2;
+      --brand-100: #d8d6e4;
+      --brand-300: #807ea0;
+      --brand-500: #3b3a52;
+      --brand-700: #26263a;
+      --accent-50: #eef6f5;
+      --accent-500: #4f9d97;
+      --accent-700: #3a7771;
+      --ink: #1a1a24;
+      --ink-soft: #4a4a5a;
+      --ink-mute: #7a7a8a;
+      --line: #e6e4dc;
+      --line-soft: #efeee7;
+      --paper: #ffffff;
+      --bg: #f7f6f1;
+      --shadow-sm: 0 1px 2px rgba(20, 16, 70, 0.04), 0 1px 1px rgba(20, 16, 70, 0.02);
+      --shadow-md: 0 4px 24px -8px rgba(20, 16, 70, 0.08), 0 2px 4px rgba(20, 16, 70, 0.03);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 72px 48px 160px;
+    }
+
+    
+    .doc-header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 40px;
+      margin-bottom: 80px;
+    }
+    .doc-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brand-500);
+      background: var(--brand-50);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .doc-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--brand-500);
+    }
+    .doc-title {
+      font-family: Georgia, serif;
+      font-size: 56px;
+      line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+      color: var(--ink);
+    }
+    .doc-subtitle {
+      font-size: 19px;
+      color: var(--ink-soft);
+      max-width: 720px;
+      margin: 0 0 32px;
+      line-height: 1.45;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 13px;
+      color: var(--ink-mute);
+    }
+    .doc-meta > div { display: flex; gap: 6px; }
+    .doc-meta b {
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    
+    .variant {
+      margin-bottom: 96px;
+    }
+    .variant:last-child { margin-bottom: 0; }
+
+    .variant-head {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+    .variant-letter {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: white;
+      font-family: Georgia, serif;
+      font-weight: 500;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.02em;
+    }
+    .variant-meta h2 {
+      margin: 4px 0 6px;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+    .variant-tradeoff {
+      font-size: 15px;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 760px;
+    }
+    .variant-tradeoff b {
+      color: var(--brand-500);
+      font-weight: 600;
+    }
+
+    
+    .preview-frame {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-left: 84px;
+      position: relative;
+    }
+    .preview-frame::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f0e9e0;
+      box-shadow: 18px 0 0 #f0e9e0, 36px 0 0 #f0e9e0;
+      z-index: 2;
+    }
+    .preview-frame-bar {
+      background: #faf9f5;
+      border-bottom: 1px solid var(--line-soft);
+      padding: 14px 16px 14px 76px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      font-weight: 600;
+    }
+    .preview {
+      padding: 0;
+      min-height: 200px;
+    }
+
+    
+    .variant-analysis {
+      margin: 24px 0 0 84px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+    }
+    .analysis-block {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+    }
+    .analysis-block h4 {
+      margin: 0 0 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-500);
+    }
+    .analysis-block.is-risk h4 { color: #b8341f; }
+    .analysis-block.is-pick h4 { color: var(--accent-700); }
+    .analysis-block p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    
+    .decision {
+      margin-top: 120px;
+      padding: 40px 48px;
+      background: var(--ink);
+      color: white;
+      border-radius: 20px;
+    }
+    .decision h3 {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+    }
+    .decision-sub {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 14px;
+      margin: 0 0 28px;
+    }
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .decision-cell b {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-100);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .decision-cell span {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.45;
+    }
+
+    
+    @media (max-width: 900px) {
+      .page { padding: 40px 20px 80px; }
+      .doc-title { font-size: 36px; }
+      .variant-head { grid-template-columns: 48px 1fr; gap: 12px; }
+      .preview-frame { margin-left: 0; }
+      .variant-analysis { margin-left: 0; grid-template-columns: 1fr; }
+    }
+
+    
+  
+.page{max-width:1500px;padding:52px 40px 80px}.doc-header{margin-bottom:36px;padding-bottom:30px}.doc-title{font-size:48px}.doc-subtitle{max-width:900px}.variant{margin:0 0 56px}.preview-frame{margin-left:0}.variant-analysis{margin:16px 0 0;display:block}.variant-head{margin-bottom:18px}.variant-meta h2{font-size:25px}.variant-letter{width:44px;height:44px}.preview-frame-bar{text-transform:none;letter-spacing:0}.analysis-block{padding:14px 20px}.analysis-block p{font-size:14px}.decision{margin-top:40px}.jump{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0 0}.jump a,.view-toggle button{padding:10px 17px;border:1px solid #d2d3c9;border-radius:9px;background:white;color:#263b2f;text-decoration:none;font-weight:700;cursor:pointer}.view-toggle{display:flex;gap:8px;margin:14px 0}.view-toggle button[aria-pressed=true]{background:#263b2f;color:white}.preview-frame.mobile{max-width:430px;margin:auto}.app{--green:#237a46;--lime:#b7ec70;--ink:#233b31;color:var(--ink);font:16px/1.5 'Segoe UI',Arial,sans-serif;background:#fffef9;display:flex;min-height:660px;container-type:inline-size}.app *{box-sizing:border-box}.app h2{font-size:29px;line-height:1.15;letter-spacing:-.7px;margin:12px 0}.app h3{font-size:19px;line-height:1.3;margin:0 0 12px}.app p{color:#607064;margin:8px 0 16px;font-size:14px}.app svg{flex-shrink:0;vertical-align:middle}.app button{font:inherit;cursor:pointer;transition:transform .15s,background .15s}.app button:hover{filter:brightness(.96)}.app button:active{transform:translateY(3px)}button:focus-visible,a:focus-visible{outline:3px solid #235cc2;outline-offset:4px}.app aside{width:205px;flex-shrink:0;border-right:2px solid #e9ede2;padding:28px 18px;display:flex;flex-direction:column}.brand{display:flex;gap:7px;align-items:center;color:var(--green);font-weight:900;font-size:25px;letter-spacing:-1.1px;white-space:nowrap}.brand>span{font-size:10px;border:1px solid #c5d6c5;border-radius:5px;padding:2px 4px;margin-left:1px;letter-spacing:0}.side-nav{margin-top:40px;display:grid;gap:12px}.nav-item{display:flex;gap:12px;align-items:center;padding:13px 10px;border:2px solid transparent;border-radius:13px;font-weight:700;font-size:14px;color:#687668}.nav-item.active{color:var(--green);background:#ecf7df;border-color:#cce7af}.side-note{margin-top:auto;padding:24px 10px 0;font-size:13px;color:#687668}.side-note svg{display:block;margin-top:14px;color:#83a477}.workspace{min-width:0;flex:1}.app-header{height:82px;border-bottom:2px solid #eef0e8;display:flex;align-items:center;justify-content:space-between;padding:0 32px;gap:16px}.app-header>span{font-size:11px;font-weight:800;letter-spacing:1.6px;color:#66765f}.stats{display:flex;gap:24px;align-items:center;font-weight:800;font-size:14px}.stats>span{display:flex;align-items:center;gap:6px}.stats svg{color:#c17a17}.stats .streak svg{color:#ce6535}.stats .avatar{width:34px;height:34px;border-radius:50%;background:#ede8fa;justify-content:center;color:#6e57a0}.label{font-size:10px;letter-spacing:1px;font-weight:800;display:flex;gap:8px;align-items:center;color:#526b50}.primary{display:flex;align-items:center;justify-content:center;gap:16px;min-height:48px;padding:12px 24px;background:var(--green);border:0;border-bottom:4px solid #14522c;border-radius:13px;color:white;font-weight:800!important}.text-btn{padding:8px 0;min-height:44px;border:0;background:none;color:var(--green);display:flex;gap:8px;align-items:center;font-weight:800!important;font-size:14px!important}.quiet{display:block;color:#697662;font-size:12px;margin-top:12px}.mascot{width:100%;height:100%}.small-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mini-card{border:2px solid #e2e8d8;border-bottom-width:4px;border-radius:18px;padding:20px;background:white}.mini-card strong{display:block;margin-top:14px;font-size:18px}.mini-card p{font-size:13px;margin-bottom:4px}.progress-line{display:flex;justify-content:space-between;gap:12px;font-size:12px;margin-bottom:10px}.progress-line b{color:var(--green)}.progress{height:12px;background:#e6eddb;border-radius:20px;overflow:hidden}.progress i{display:block;width:50%;height:100%;background:#8fcf50;border-radius:20px;border-top:3px solid #a4df69}.bottom-nav{display:none;justify-content:space-around;border-top:2px solid #e5e9de;background:#fffef9;padding:12px 6px}.bottom-nav span{display:flex;align-items:center;flex-direction:column;gap:3px;color:#71806d}.bottom-nav small{font-size:10px}.bottom-nav .selected{color:var(--green);font-weight:800}.va-layout{display:grid;grid-template-columns:minmax(270px,1fr) 255px;gap:28px;padding:28px 32px}.chapter{background:var(--green);border-radius:17px;color:white;padding:20px 23px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:5px solid #15572f}.chapter .label{color:#def0cc;font-size:9px}.chapter h2{font-size:24px;margin:8px 0}.chapter p{color:#e2efdb;font-size:12px;margin:0}.path{position:relative;height:380px;max-width:500px;margin:auto}.trail{position:absolute;width:100px;height:255px;border:10px dashed #e4eadb;border-radius:70px;left:calc(50% - 60px);top:45px;transform:rotate(-16deg)}.node{position:absolute;width:66px;height:62px;border-radius:50%;display:grid;place-items:center;background:#8fce53;color:#315b24;border:0;border-bottom:7px solid #6ea634;left:calc(50% - 33px)}.node.n1{top:22px;transform:translateX(-35px)}.node.n2{top:101px;transform:translateX(-70px)}.node.n3{top:184px;background:#237a46;color:white;border-bottom-color:#14552f;outline:8px solid #e4efd6;outline-offset:4px;width:74px;height:70px}.node.n4{top:275px;transform:translateX(50px)}.node.n5{top:350px}.locked{background:#e9eddf;color:#909c82;border-bottom-color:#ced5c3}.current-label{position:absolute;top:157px;left:calc(50% - 39px);font-size:9px;letter-spacing:1px;font-weight:800;color:#237a46}.path-friend{position:absolute;left:2%;top:220px;width:115px;height:130px}.bubble{position:absolute;top:-20px;left:-25px;width:145px;border:2px solid #e5e8dc;background:white;border-radius:13px;padding:7px 9px;text-align:center;font-size:10px;transform:rotate(-5deg)}.next-topic{margin-top:42px;padding:18px 0 0;text-align:center;font-size:13px;color:#687763;border-top:2px solid #ecefe4}.goal{border:2px solid #e2e8d8;border-radius:18px;padding:20px;margin-bottom:18px}.goal h3{font-size:17px}.week{display:flex;justify-content:space-between;margin-top:18px;font-size:10px}.week>*{width:23px;height:23px;display:grid;place-items:center;background:#f0f2ea;border-radius:50%;color:#78816e}.week>b{background:#e4f2cb;color:#497b2c}.va-rail .small-cards{grid-template-columns:1fr}.community{display:flex;gap:10px;padding:22px 3px;color:#66805b}.community b{font-size:12px}.community p{font-size:11px;margin:5px 0}.vb-app,.vc-app{display:block}.vb-body{max-width:880px;margin:auto;padding:36px 40px}.vb-greeting{text-align:center}.vb-greeting .label{justify-content:center}.vb-greeting h2{font-size:35px;line-height:1.18}.vb-hero{display:grid;grid-template-columns:1fr 1.15fr;align-items:center;margin:24px 0 28px;border-radius:28px;background:#f0f6df;padding:24px 38px;gap:24px}.vb-mascot{height:240px;position:relative}.vb-mascot:before{content:'';position:absolute;inset:15px;border-radius:50%;background:#e3edc8}.vb-mascot svg{position:relative}.spark{position:absolute;color:#789a38;font-size:35px}.s1{left:3%;top:18%}.s2{right:0;top:45%}.pill{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.8px;padding:6px 10px;background:#dcedc2;color:#3e632d;border-radius:7px}.vb-lesson h2{font-size:27px}.vb-progress{margin:0 0 24px}.vb-course{display:flex;justify-content:space-between;align-items:center;gap:18px;font-size:12px;margin-top:18px}.vc-body{padding:28px 40px;max-width:1100px;margin:auto}.vc-heading{display:flex;justify-content:space-between;align-items:center}.vc-heading h2{font-size:32px}.vc-guide{height:145px;width:150px}.islands{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:12px 0 24px}.island{border:2px solid #e5e8dc;border-bottom-width:5px;border-radius:23px;overflow:hidden;padding:0 20px 20px;background:white;text-align:center}.island.current{border-color:#9bc767;background:#f8fceb}.island-art{height:135px;position:relative;display:grid;place-items:center;margin:0 -20px 18px;background:#e7f1cf;overflow:hidden;color:#567b35}.island-art svg{z-index:1;background:#fff7c7;border:9px solid #fff7c7;border-radius:25px;width:88px;height:88px;transform:rotate(-8deg)}.hill{position:absolute;width:140%;height:90px;background:#cadfa7;border-radius:50%;bottom:-55px;left:-20%}.island-art.family{background:#f6e9d7;color:#a67347}.family .hill{background:#e5cba4}.family svg{background:#fff7e4;border-color:#fff7e4}.island-art.school{background:#e6eef4;color:#5c8095}.school .hill{background:#c5d9e3}.school svg{background:#f8fcff;border-color:#f8fcff}.island h3{font-size:22px;margin:12px 0 4px}.island p{font-size:12px}.island .label{justify-content:center;min-height:27px;font-size:9px}.island .primary{width:100%;font-size:13px}.dots{display:flex;justify-content:center;gap:6px;margin:14px}.dots>*{width:20px;height:5px;background:#dce4cd;border-radius:5px}.dots b{background:#6ca739}.locked-label{font-size:12px;color:#75816b;margin-top:25px}.vc-progress{margin-top:25px;max-width:400px}.vd-body{padding:28px 32px}.vd-welcome{display:flex;align-items:center;justify-content:space-between;height:155px}.vd-welcome .mascot{width:145px;height:155px}.vd-welcome h2{font-size:30px}.vd-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;margin-top:24px}.vd-next{background:#eef5df;border:2px solid #d5e5b6;border-bottom-width:5px;border-radius:20px;padding:24px;margin-bottom:20px}.vd-next .primary{width:100%;margin-top:22px}.vd-summary{border:2px solid #e3e8da;border-radius:20px;padding:22px}.vd-summary h3{font-size:19px}.metric{display:flex;justify-content:space-between;gap:10px;font-size:12px;border-bottom:1px solid #e8ecdf;padding:20px 0}.metric span{display:flex;align-items:center;gap:7px}.metric svg{color:#b97935}.class-callout{padding-top:22px}.class-callout>svg{color:#237a46}.class-callout h3{margin-top:12px;font-size:17px}.class-callout p{font-size:12px}.vd-app .mini-card{padding:17px}.vd-app .mini-card .label{font-size:8px}.notice{padding:14px 18px;background:#fff9e6;border:1px solid #e7dcb6;border-radius:10px;font-size:13px;color:#5a513b;margin:20px 0}.compare-grid{display:grid;grid-template-columns:1fr;gap:0}.compare-grid.overview{grid-template-columns:1fr 1fr;gap:25px}.overview .variant-head{grid-template-columns:40px 1fr;gap:12px}.overview .variant-meta h2{font-size:21px}.overview .variant-tradeoff{font-size:13px}.overview .app aside{display:none}.overview .variant{min-width:0}.overview .preview-frame{margin:0}.overview .app{min-height:0}dialog{border:2px solid #dae4cd;border-radius:24px;padding:28px;max-width:450px;width:calc(100% - 32px);color:#233b31;font-family:'Segoe UI',sans-serif}dialog::backdrop{background:#20332788}dialog h2{font-size:24px}dialog .close{float:right;border:0;background:#edf2e5;border-radius:50%;width:36px;height:36px;cursor:pointer}dialog .answer{display:block;width:100%;padding:13px;margin:10px 0;border:2px solid #dee7d2;background:white;border-radius:12px;text-align:left;color:#233b31;cursor:pointer;font:inherit}dialog .feedback{padding:14px;background:#edf6df;border-radius:12px}dialog .report{margin-top:15px;padding-top:15px;border-top:1px solid #dce7cf}dialog .vote{min-height:44px;padding:8px 15px;background:white;border:2px solid #dce7cf;border-radius:10px;cursor:pointer}dialog textarea{display:block;width:100%;min-height:70px;margin:10px 0;border:1px solid #b6c6a7;border-radius:8px;padding:10px;font:inherit}dialog .primary{background:#237a46;color:white;border:0;border-radius:10px;padding:13px 20px;cursor:pointer;font-weight:700;min-height:44px}.hidden{display:none!important}
+@container (max-width:850px){.app aside{display:none}.va-layout{grid-template-columns:1fr 225px;gap:20px;padding:24px}.vd-grid{gap:16px}.app-header{padding:0 24px}.bottom-nav{display:flex}}
+@container (max-width:620px){.app-header{padding:0 18px;height:70px}.brand{font-size:22px}.stats{gap:12px;font-size:12px}.stats .avatar{display:none}.app-header>span{display:none}.app-header{justify-content:space-between}.va-app .app-header,.vd-app .app-header{justify-content:flex-end}.va-layout{grid-template-columns:1fr;padding:20px;gap:24px}.chapter h2{font-size:23px}.chapter{padding:18px}.va-rail .small-cards{grid-template-columns:1fr 1fr}.goal{margin:0 0 16px}.community{display:none}.path{height:405px}.next-topic{margin-top:15px}.va-rail .mini-card{padding:14px}.small-cards{gap:12px}.mini-card{padding:16px}.mini-card .label{font-size:8px;letter-spacing:.3px}.mini-card strong{font-size:16px}.mini-card p{font-size:12px}.vb-body,.vc-body{padding:26px 20px}.vb-greeting h2{font-size:29px}.vb-greeting .label{font-size:9px}.vb-hero{grid-template-columns:1fr;text-align:center;gap:0;padding:10px 24px 24px;margin-top:20px}.vb-mascot{height:190px;width:210px;margin:auto}.vb-lesson h2{font-size:25px}.vb-lesson .primary{width:100%}.vb-lesson p br{display:none}.vb-course{display:block}.vb-course>span{display:none}.vc-heading h2{font-size:27px}.vc-guide{width:95px;height:130px;flex-shrink:0}.vc-heading .label{font-size:8px}.vc-heading p{font-size:12px}.islands{grid-template-columns:1fr;gap:14px}.island{padding:16px 16px 16px 125px;min-height:140px;position:relative;text-align:left}.island-art{position:absolute;top:0;bottom:0;left:0;width:105px;height:100%;margin:0}.island-art svg{width:67px;height:67px}.island .label{justify-content:flex-start;font-size:8px}.island h3{font-size:22px}.island .pill{font-size:8px}.island .dots{justify-content:flex-start;margin:12px 0}.island .primary{font-size:12px;padding:10px}.island .locked-label{margin-top:12px;font-size:10px}.vd-body{padding:20px}.vd-welcome{height:auto}.vd-welcome h2{font-size:25px}.vd-welcome p{font-size:12px}.vd-welcome .label{font-size:8px}.vd-welcome .mascot{width:90px;height:130px;flex-shrink:0}.vd-grid{grid-template-columns:1fr}.vd-summary{margin-bottom:5px}.vd-next h2{font-size:27px}.vd-summary .class-callout{display:none}}
+@media(max-width:800px){.page{padding:26px 16px 60px}.doc-title{font-size:36px}.doc-subtitle{font-size:16px}.compare-grid.overview{grid-template-columns:1fr}.decision{padding:26px}.variant-head{grid-template-columns:42px 1fr}.doc-meta{gap:12px}.view-toggle{flex-wrap:wrap}.preview-frame.mobile{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style></head><body><main class="page"><header class="doc-header"><div class="doc-eyebrow">Bashlingo / исследование дизайна</div><h1 class="doc-title">Свой язык. Свой путь.</h1><p class="doc-subtitle">Четыре способа начать учебный день. Одна куница, одни возможности — разный ритм и акценты.</p><div class="doc-meta"><div><b>Экран</b> Главная ученика</div><div><b>Платформы</b> Сайт + Telegram Mini App</div><div><b>Дата</b> 13.11.2026</div></div><nav class="jump" aria-label="Варианты"><a href="#variant-A">A · Тропа знаний</a><a href="#variant-B">B · Один маленький шаг</a><a href="#variant-C">C · Острова открытий</a><a href="#variant-D">D · Мой учебный день</a></nav></header><div class="notice">Это варианты дизайна, а не готовое приложение. Прогресс, XP и задания класса — демонстрационные. Нажми «Продолжить» или «Задание дня», чтобы проверить пример ответа и сообщения об ошибке.</div><div class="view-toggle" aria-label="Размер предпросмотра"><button data-mode="full" aria-pressed="true">Большой экран</button><button data-mode="mobile" aria-pressed="false">Телефон / Mini App</button><button data-mode="overview" aria-pressed="false">Рядом для сравнения</button></div><div class="compare-grid"><section class="variant" id="variant-A"><div class="variant-head"><div class="variant-letter">A</div><div class="variant-meta"><h2>Тропа знаний</h2><p class="variant-tradeoff">Самый игровой: следующий урок всегда очевиден. Задания класса занимают второй план.</p></div></div><div class="preview-frame"><div class="preview-frame-bar">Bashlingo · A · демонстрационный профиль</div><div class="preview"><div class="va-app app"><aside><div class="brand"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg> bashlingo<span>БА</span></div><div class="side-nav"><span class="nav-item active"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>Учиться</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><span>Задание дня</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><span>Мой класс</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v7a5 5 0 0 1-10 0zM7 5H3v3c0 3 2 4 4 4m10-7h4v3c0 3-2 4-4 4m-5 3v6m-4 0h8"/></svg><span>Рейтинг</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><span>Профиль</span></span></div><div class="side-note">Маленькие шаги.<br><b>Большие открытия.</b><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg></div></aside><div class="workspace"><header class="app-header"><span>ТВОЙ ПУТЬ</span><div class="stats"><span class="streak"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2c1 7-5 6-4 11 2 0 4-2 4-4 5 3 6 6 4 10-2 4-9 4-11 0C2 12 10 9 13 2z"/></svg> 3 дня</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg> 120 XP</span><span class="avatar">А</span></div></header><div class="va-layout"><div class="va-main"><div class="chapter"><div><span class="label">РАЗДЕЛ 1 · ПЕРВЫЕ СЛОВА</span><h2>Давай знакомиться!</h2><p>Начни разговор на башкирском</p></div><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></div><div class="path"><div class="trail"></div><div class="node n1 done"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></div><div class="node n2 done"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></div><div class="current-label">ТЫ ЗДЕСЬ</div><button class="node n3" data-action="lesson" aria-label="Начать урок знакомства"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg></button><div class="node n4 locked"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div class="node n5 locked"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v7a5 5 0 0 1-10 0zM7 5H3v3c0 3 2 4 4 4m10-7h4v3c0 3-2 4-4 4m-5 3v6m-4 0h8"/></svg></div><div class="path-friend"><svg class="mascot " viewBox="0 0 240 250" role="img" aria-label="Рыжая куница — персонаж Bashlingo">
+    <ellipse cx="123" cy="232" rx="83" ry="10" fill="#24452c" opacity=".09"/>
+    <path d="M155 211c79 15 88-61 53-91-10-9-20-5-18 9 7 36-26 27-40 45" fill="#a9562e"/>
+    <path d="M159 210c47 4 68-31 56-60-2 35-26 39-53 32" fill="#c87940"/>
+    <ellipse cx="115" cy="171" rx="49" ry="57" fill="#bc6b36"/>
+    <path d="M87 134q29-12 55 0l-5 59q-22 24-44 0z" fill="#ffe6a6"/>
+    <ellipse cx="80" cy="220" rx="23" ry="12" fill="#814127"/><ellipse cx="147" cy="220" rx="23" ry="12" fill="#814127"/>
+    <path d="M76 144Q42 160 41 187q7 14 17 1l29-25M150 146q34-33 38-60" fill="none" stroke="#bc6b36" stroke-width="21" stroke-linecap="round"/>
+    <circle cx="187" cy="84" r="13" fill="#bc6b36"/>
+    <ellipse cx="69" cy="51" rx="24" ry="28" fill="#a85d32"/><ellipse cx="165" cy="51" rx="24" ry="28" fill="#a85d32"/>
+    <ellipse cx="69" cy="51" rx="13" ry="17" fill="#efb875"/><ellipse cx="165" cy="51" rx="13" ry="17" fill="#efb875"/>
+    <path d="M52 72q3-43 64-42 63-1 67 42l-4 31q-7 44-62 45-56-3-64-43z" fill="#ce8247"/>
+    <path d="M60 83q20-30 50 5l7 8 8-8q29-35 49-5l-1 24q-16 36-56 34-42 1-56-33z" fill="#ffebbc"/>
+    <ellipse cx="89" cy="88" rx="9" ry="13" fill="#2b312b"/><ellipse cx="146" cy="88" rx="9" ry="13" fill="#2b312b"/>
+    <circle cx="92" cy="83" r="3" fill="white"/><circle cx="149" cy="83" r="3" fill="white"/>
+    <path d="M106 103q11-8 23 0-1 13-12 13t-11-13" fill="#4f3427"/>
+    <path d="M105 122q12 12 24 0" fill="none" stroke="#4f3427" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="76" cy="110" rx="11" ry="6" fill="#e39b72"/><ellipse cx="157" cy="110" rx="11" ry="6" fill="#e39b72"/>
+    <path d="M78 145q38 15 77-1l-3 18q-34 13-72-1z" fill="#237a46"/><path d="m146 157 12 28-24-3 1-23" fill="#237a46"/>
+    <path d="m104 151 7 5 7-5 7 5 7-5" fill="none" stroke="#c9ed88" stroke-width="3"/>
+    </svg><div class="bubble">Ещё один шаг?<br><b>У тебя получится!</b></div></div></div><div class="next-topic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Дальше — «Моя семья»</div></div><div class="va-rail"><div class="goal"><h3>Растём каждый день</h3><div class="progress-line"><span>Цель на сегодня</span><b>10 / 20 XP</b></div><div class="progress"><i></i></div><div class="week"><b>П</b><b>В</b><b>С</b><span>Ч</span><span>П</span><span>С</span><span>В</span></div></div><div class="small-cards"><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg> ЛИЧНАЯ ПРАКТИКА</span><strong>Задание дня</strong><p>5 упражнений под твой уровень</p><button class="text-btn" data-action="daily">Начать <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg> ОТ УЧИТЕЛЯ</span><strong>Моя семья</strong><p>6 карточек · твой класс</p><button class="text-btn" data-action="homework">Открыть <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div><div class="community"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg><div><b>Твой язык. Твой вклад.</b><p>Замечай ошибки в переводах — помогай Bashlingo расти.</p></div></div></div></div><div class="bottom-nav"><span class="selected"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><small>Уроки</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><small>Сегодня</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><small>Класс</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><small>Профиль</small></span></div></div></div></div></div><div class="variant-analysis"><div class="analysis-block"><p>Выбирай, если главный приоритет — ощущение Duolingo и понятный маршрут.</p></div></div></section><section class="variant" id="variant-B"><div class="variant-head"><div class="variant-letter">B</div><div class="variant-meta"><h2>Один маленький шаг</h2><p class="variant-tradeoff">Самый спокойный: сразу ведёт в занятие. Общая структура курса менее заметна.</p></div></div><div class="preview-frame"><div class="preview-frame-bar">Bashlingo · B · демонстрационный профиль</div><div class="preview"><div class="vb-app app"><header class="app-header"><div class="brand"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg> bashlingo<span>БА</span></div><div class="stats"><span class="streak"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2c1 7-5 6-4 11 2 0 4-2 4-4 5 3 6 6 4 10-2 4-9 4-11 0C2 12 10 9 13 2z"/></svg> 3 дня</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg> 120 XP</span><span class="avatar">А</span></div></header><div class="vb-body"><div class="vb-greeting"><span class="label">ХОРОШИЙ ДЕНЬ ДЛЯ НОВЫХ СЛОВ</span><h2>Пять минут.<br>Чуть ближе к своему языку.</h2><p>Продолжим знакомство? Куница уже ждёт.</p></div><div class="vb-hero"><div class="vb-mascot"><svg class="mascot " viewBox="0 0 240 250" role="img" aria-label="Рыжая куница — персонаж Bashlingo">
+    <ellipse cx="123" cy="232" rx="83" ry="10" fill="#24452c" opacity=".09"/>
+    <path d="M155 211c79 15 88-61 53-91-10-9-20-5-18 9 7 36-26 27-40 45" fill="#a9562e"/>
+    <path d="M159 210c47 4 68-31 56-60-2 35-26 39-53 32" fill="#c87940"/>
+    <ellipse cx="115" cy="171" rx="49" ry="57" fill="#bc6b36"/>
+    <path d="M87 134q29-12 55 0l-5 59q-22 24-44 0z" fill="#ffe6a6"/>
+    <ellipse cx="80" cy="220" rx="23" ry="12" fill="#814127"/><ellipse cx="147" cy="220" rx="23" ry="12" fill="#814127"/>
+    <path d="M76 144Q42 160 41 187q7 14 17 1l29-25M150 146q34-33 38-60" fill="none" stroke="#bc6b36" stroke-width="21" stroke-linecap="round"/>
+    <circle cx="187" cy="84" r="13" fill="#bc6b36"/>
+    <ellipse cx="69" cy="51" rx="24" ry="28" fill="#a85d32"/><ellipse cx="165" cy="51" rx="24" ry="28" fill="#a85d32"/>
+    <ellipse cx="69" cy="51" rx="13" ry="17" fill="#efb875"/><ellipse cx="165" cy="51" rx="13" ry="17" fill="#efb875"/>
+    <path d="M52 72q3-43 64-42 63-1 67 42l-4 31q-7 44-62 45-56-3-64-43z" fill="#ce8247"/>
+    <path d="M60 83q20-30 50 5l7 8 8-8q29-35 49-5l-1 24q-16 36-56 34-42 1-56-33z" fill="#ffebbc"/>
+    <ellipse cx="89" cy="88" rx="9" ry="13" fill="#2b312b"/><ellipse cx="146" cy="88" rx="9" ry="13" fill="#2b312b"/>
+    <circle cx="92" cy="83" r="3" fill="white"/><circle cx="149" cy="83" r="3" fill="white"/>
+    <path d="M106 103q11-8 23 0-1 13-12 13t-11-13" fill="#4f3427"/>
+    <path d="M105 122q12 12 24 0" fill="none" stroke="#4f3427" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="76" cy="110" rx="11" ry="6" fill="#e39b72"/><ellipse cx="157" cy="110" rx="11" ry="6" fill="#e39b72"/>
+    <path d="M78 145q38 15 77-1l-3 18q-34 13-72-1z" fill="#237a46"/><path d="m146 157 12 28-24-3 1-23" fill="#237a46"/>
+    <path d="m104 151 7 5 7-5 7 5 7-5" fill="none" stroke="#c9ed88" stroke-width="3"/>
+    </svg><span class="spark s1">✦</span><span class="spark s2">✧</span></div><div class="vb-lesson"><span class="pill">РАЗДЕЛ 1 · УРОК 3</span><h2>Давай знакомиться!</h2><p>Научись представляться<br>и спрашивать имя собеседника.</p><button class="primary" data-action="lesson">Продолжить урок <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button><span class="quiet">Короткое занятие · первые слова</span></div></div><div class="vb-progress"><div class="progress-line"><span>Цель на сегодня</span><b>10 / 20 XP</b></div><div class="progress"><i></i></div></div><div class="small-cards"><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg> ЛИЧНАЯ ПРАКТИКА</span><strong>Задание дня</strong><p>5 упражнений под твой уровень</p><button class="text-btn" data-action="daily">Начать <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg> ОТ УЧИТЕЛЯ</span><strong>Моя семья</strong><p>6 карточек · твой класс</p><button class="text-btn" data-action="homework">Открыть <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div><div class="vb-course"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg> Твой курс: Знакомство → Семья → Школа</span><button class="text-btn" data-action="course">Все темы <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div><div class="bottom-nav"><span class="selected"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><small>Уроки</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><small>Сегодня</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><small>Класс</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><small>Профиль</small></span></div></div></div></div><div class="variant-analysis"><div class="analysis-block"><p>Выбирай, если важнее быстрый старт и простота на телефоне.</p></div></div></section><section class="variant" id="variant-C"><div class="variant-head"><div class="variant-letter">C</div><div class="variant-meta"><h2>Острова открытий</h2><p class="variant-tradeoff">Самый исследовательский: темы видны целиком. Выбор отвлекает от одного следующего шага.</p></div></div><div class="preview-frame"><div class="preview-frame-bar">Bashlingo · C · демонстрационный профиль</div><div class="preview"><div class="vc-app app"><header class="app-header"><div class="brand"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg> bashlingo<span>БА</span></div><div class="stats"><span class="streak"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2c1 7-5 6-4 11 2 0 4-2 4-4 5 3 6 6 4 10-2 4-9 4-11 0C2 12 10 9 13 2z"/></svg> 3 дня</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg> 120 XP</span><span class="avatar">А</span></div></header><div class="vc-body"><div class="vc-heading"><div><span class="label">ТВОЙ МИР БАШКИРСКОГО</span><h2>Каждое слово — открытие.</h2><p>Сегодня начнём с простого разговора.</p></div><div class="vc-guide"><svg class="mascot " viewBox="0 0 240 250" role="img" aria-label="Рыжая куница — персонаж Bashlingo">
+    <ellipse cx="123" cy="232" rx="83" ry="10" fill="#24452c" opacity=".09"/>
+    <path d="M155 211c79 15 88-61 53-91-10-9-20-5-18 9 7 36-26 27-40 45" fill="#a9562e"/>
+    <path d="M159 210c47 4 68-31 56-60-2 35-26 39-53 32" fill="#c87940"/>
+    <ellipse cx="115" cy="171" rx="49" ry="57" fill="#bc6b36"/>
+    <path d="M87 134q29-12 55 0l-5 59q-22 24-44 0z" fill="#ffe6a6"/>
+    <ellipse cx="80" cy="220" rx="23" ry="12" fill="#814127"/><ellipse cx="147" cy="220" rx="23" ry="12" fill="#814127"/>
+    <path d="M76 144Q42 160 41 187q7 14 17 1l29-25M150 146q34-33 38-60" fill="none" stroke="#bc6b36" stroke-width="21" stroke-linecap="round"/>
+    <circle cx="187" cy="84" r="13" fill="#bc6b36"/>
+    <ellipse cx="69" cy="51" rx="24" ry="28" fill="#a85d32"/><ellipse cx="165" cy="51" rx="24" ry="28" fill="#a85d32"/>
+    <ellipse cx="69" cy="51" rx="13" ry="17" fill="#efb875"/><ellipse cx="165" cy="51" rx="13" ry="17" fill="#efb875"/>
+    <path d="M52 72q3-43 64-42 63-1 67 42l-4 31q-7 44-62 45-56-3-64-43z" fill="#ce8247"/>
+    <path d="M60 83q20-30 50 5l7 8 8-8q29-35 49-5l-1 24q-16 36-56 34-42 1-56-33z" fill="#ffebbc"/>
+    <ellipse cx="89" cy="88" rx="9" ry="13" fill="#2b312b"/><ellipse cx="146" cy="88" rx="9" ry="13" fill="#2b312b"/>
+    <circle cx="92" cy="83" r="3" fill="white"/><circle cx="149" cy="83" r="3" fill="white"/>
+    <path d="M106 103q11-8 23 0-1 13-12 13t-11-13" fill="#4f3427"/>
+    <path d="M105 122q12 12 24 0" fill="none" stroke="#4f3427" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="76" cy="110" rx="11" ry="6" fill="#e39b72"/><ellipse cx="157" cy="110" rx="11" ry="6" fill="#e39b72"/>
+    <path d="M78 145q38 15 77-1l-3 18q-34 13-72-1z" fill="#237a46"/><path d="m146 157 12 28-24-3 1-23" fill="#237a46"/>
+    <path d="m104 151 7 5 7-5 7 5 7-5" fill="none" stroke="#c9ed88" stroke-width="3"/>
+    </svg></div></div><div class="islands"><div class="island current"><div class="island-art"><svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><span class="hill"></span></div><span class="pill">СЕЙЧАС ИЗУЧАЕМ</span><h3>Знакомство</h3><p>Первые слова и новые друзья</p><div class="dots"><b></b><b></b><i></i><i></i><i></i></div><button class="primary" data-action="lesson">Продолжить <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="island"><div class="island-art family"><svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><span class="hill"></span></div><span class="label">СЛЕДУЮЩАЯ ТЕМА</span><h3>Моя семья</h3><p>О тех, кто рядом</p><div class="locked-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> После знакомства</div></div><div class="island"><div class="island-art school"><svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span class="hill"></span></div><span class="label">ВПЕРЕДИ</span><h3>В школе</h3><p>Учимся говорить о своём дне</p><div class="locked-label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> После темы «Семья»</div></div></div><div class="small-cards"><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg> ЛИЧНАЯ ПРАКТИКА</span><strong>Задание дня</strong><p>5 упражнений под твой уровень</p><button class="text-btn" data-action="daily">Начать <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg> ОТ УЧИТЕЛЯ</span><strong>Моя семья</strong><p>6 карточек · твой класс</p><button class="text-btn" data-action="homework">Открыть <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div><div class="vc-progress"><div class="progress-line"><span>Цель на сегодня</span><b>10 / 20 XP</b></div><div class="progress"><i></i></div></div></div><div class="bottom-nav"><span class="selected"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><small>Уроки</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><small>Сегодня</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><small>Класс</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><small>Профиль</small></span></div></div></div></div><div class="variant-analysis"><div class="analysis-block"><p>Выбирай, если хочется видеть курс как мир с отдельными темами.</p></div></div></section><section class="variant" id="variant-D"><div class="variant-head"><div class="variant-letter">D</div><div class="variant-meta"><h2>Мой учебный день</h2><p class="variant-tradeoff">Самый организованный: личная учёба и класс рядом. Меньше ощущения приключения.</p></div></div><div class="preview-frame"><div class="preview-frame-bar">Bashlingo · D · демонстрационный профиль</div><div class="preview"><div class="vd-app app"><aside><div class="brand"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3C7 1 0 10 7 17S22 14 20 3ZM5 21 16 8"/></svg> bashlingo<span>БА</span></div><div class="side-nav"><span class="nav-item active"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>Учиться</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><span>Задание дня</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><span>Мой класс</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v7a5 5 0 0 1-10 0zM7 5H3v3c0 3 2 4 4 4m10-7h4v3c0 3-2 4-4 4m-5 3v6m-4 0h8"/></svg><span>Рейтинг</span></span><span class="nav-item "><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><span>Профиль</span></span></div><div class="side-note">Твой класс<br><b>Учимся вместе</b><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg></div></aside><div class="workspace"><header class="app-header"><span>МОЙ УЧЕБНЫЙ ДЕНЬ</span><div class="stats"><span class="streak"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2c1 7-5 6-4 11 2 0 4-2 4-4 5 3 6 6 4 10-2 4-9 4-11 0C2 12 10 9 13 2z"/></svg> 3 дня</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg> 120 XP</span><span class="avatar">А</span></div></header><div class="vd-body"><div class="vd-welcome"><div><span class="label">ТЫ УЖЕ НА ШАГ ВПЕРЕДИ</span><h2>Продолжим, ученик!</h2><p>Немного практики — и новые слова станут своими.</p></div><svg class="mascot " viewBox="0 0 240 250" role="img" aria-label="Рыжая куница — персонаж Bashlingo">
+    <ellipse cx="123" cy="232" rx="83" ry="10" fill="#24452c" opacity=".09"/>
+    <path d="M155 211c79 15 88-61 53-91-10-9-20-5-18 9 7 36-26 27-40 45" fill="#a9562e"/>
+    <path d="M159 210c47 4 68-31 56-60-2 35-26 39-53 32" fill="#c87940"/>
+    <ellipse cx="115" cy="171" rx="49" ry="57" fill="#bc6b36"/>
+    <path d="M87 134q29-12 55 0l-5 59q-22 24-44 0z" fill="#ffe6a6"/>
+    <ellipse cx="80" cy="220" rx="23" ry="12" fill="#814127"/><ellipse cx="147" cy="220" rx="23" ry="12" fill="#814127"/>
+    <path d="M76 144Q42 160 41 187q7 14 17 1l29-25M150 146q34-33 38-60" fill="none" stroke="#bc6b36" stroke-width="21" stroke-linecap="round"/>
+    <circle cx="187" cy="84" r="13" fill="#bc6b36"/>
+    <ellipse cx="69" cy="51" rx="24" ry="28" fill="#a85d32"/><ellipse cx="165" cy="51" rx="24" ry="28" fill="#a85d32"/>
+    <ellipse cx="69" cy="51" rx="13" ry="17" fill="#efb875"/><ellipse cx="165" cy="51" rx="13" ry="17" fill="#efb875"/>
+    <path d="M52 72q3-43 64-42 63-1 67 42l-4 31q-7 44-62 45-56-3-64-43z" fill="#ce8247"/>
+    <path d="M60 83q20-30 50 5l7 8 8-8q29-35 49-5l-1 24q-16 36-56 34-42 1-56-33z" fill="#ffebbc"/>
+    <ellipse cx="89" cy="88" rx="9" ry="13" fill="#2b312b"/><ellipse cx="146" cy="88" rx="9" ry="13" fill="#2b312b"/>
+    <circle cx="92" cy="83" r="3" fill="white"/><circle cx="149" cy="83" r="3" fill="white"/>
+    <path d="M106 103q11-8 23 0-1 13-12 13t-11-13" fill="#4f3427"/>
+    <path d="M105 122q12 12 24 0" fill="none" stroke="#4f3427" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="76" cy="110" rx="11" ry="6" fill="#e39b72"/><ellipse cx="157" cy="110" rx="11" ry="6" fill="#e39b72"/>
+    <path d="M78 145q38 15 77-1l-3 18q-34 13-72-1z" fill="#237a46"/><path d="m146 157 12 28-24-3 1-23" fill="#237a46"/>
+    <path d="m104 151 7 5 7-5 7 5 7-5" fill="none" stroke="#c9ed88" stroke-width="3"/>
+    </svg></div><div class="vd-grid"><div><div class="vd-next"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg> СЛЕДУЮЩИЙ УРОК</span><h2>Давай знакомиться!</h2><p>Раздел 1 · первые слова</p><button class="primary" data-action="lesson">Продолжить <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="small-cards"><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg> ЛИЧНАЯ ПРАКТИКА</span><strong>Задание дня</strong><p>5 упражнений под твой уровень</p><button class="text-btn" data-action="daily">Начать <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div><div class="mini-card"><span class="label"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg> ОТ УЧИТЕЛЯ</span><strong>Моя семья</strong><p>6 карточек · твой класс</p><button class="text-btn" data-action="homework">Открыть <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div></div><div class="vd-summary"><h3>Твой прогресс</h3><div class="progress-line"><span>Цель на сегодня</span><b>10 / 20 XP</b></div><div class="progress"><i></i></div><div class="metric"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2c1 7-5 6-4 11 2 0 4-2 4-4 5 3 6 6 4 10-2 4-9 4-11 0C2 12 10 9 13 2z"/></svg> Серия занятий</span><b>3 дня</b></div><div class="metric"><span><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/></svg> Всего опыта</span><b>120 XP</b></div><div class="class-callout"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><h3>Вместе интереснее</h3><p>Задания учителя и достижения класса — в одном месте.</p><button class="text-btn" data-action="class">Мой класс <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button></div></div></div></div><div class="bottom-nav"><span class="selected"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><small>Уроки</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg><small>Сегодня</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M10 21v-7h4v7"/></svg><small>Класс</small></span><span class=""><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0 1 16 0v3"/></svg><small>Профиль</small></span></div></div></div></div></div><div class="variant-analysis"><div class="analysis-block"><p>Выбирай, если школа и домашние задания так же важны, как личный курс.</p></div></div></section></div><section class="decision"><h3>Какой Bashlingo ближе тебе?</h3><p class="decision-sub">Рекомендация: A — самый близкий к согласованной игровой подаче. Можно взять главную A и компактную карточку задания из B.</p><div class="decision-grid"><div class="decision-cell"><b>A · Тропа знаний</b><span>Выбирай, если главный приоритет — ощущение Duolingo и понятный маршрут.</span></div><div class="decision-cell"><b>B · Один маленький шаг</b><span>Выбирай, если важнее быстрый старт и простота на телефоне.</span></div><div class="decision-cell"><b>C · Острова открытий</b><span>Выбирай, если хочется видеть курс как мир с отдельными темами.</span></div><div class="decision-cell"><b>D · Мой учебный день</b><span>Выбирай, если школа и домашние задания так же важны, как личный курс.</span></div></div></section></main><dialog id="lesson"><button class="close" aria-label="Закрыть">×</button><span class="label" id="dialog-label">ПРИМЕР ВЗАИМОДЕЙСТВИЯ</span><h2 id="dialog-title">Выбери перевод</h2><div id="exercise"><p style="font-size:25px;font-weight:700">Һаумыһығыҙ!</p><button class="answer" data-correct="true">Здравствуйте!</button><button class="answer" data-correct="false">Другой вариант</button><div class="feedback hidden" role="status"></div><div class="report hidden"><b>В переводе ошибка?</b><p><button class="vote" data-vote="yes" aria-label="Перевод верный">👍</button> <button class="vote" data-vote="no" aria-label="В переводе ошибка">👎</button></p><div class="correction hidden"><label>Почему считаешь перевод неверным?<textarea id="reason"></textarea></label><label>Твой вариант (если знаешь)<textarea id="proposal"></textarea></label><button class="primary" id="send-report">Отправить замечание</button></div><p id="report-status" role="status"></p></div></div><div id="info" class="hidden"></div><p class="quiet">Дизайн-прототип. Ответы и замечания не отправляются на сервер.</p></dialog><script>
+const dialog=document.querySelector('dialog');
+document.querySelector('.close').onclick=()=>dialog.close();
+dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.querySelector('.compare-grid').classList.toggle('overview',b.dataset.mode==='overview');document.querySelectorAll('.preview-frame').forEach(f=>f.classList.toggle('mobile',b.dataset.mode==='mobile'))});
+document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const a=b.dataset.action;const exercise=['lesson','daily'].includes(a);document.querySelector('#exercise').classList.toggle('hidden',!exercise);document.querySelector('#info').classList.toggle('hidden',exercise);document.querySelector('#dialog-title').textContent=a==='daily'?'Задание дня':a==='lesson'?'Выбери перевод':a==='homework'?'От учителя: Моя семья':a==='course'?'Твой курс':'Мой класс';document.querySelector('#info').textContent=a==='homework'?'Здесь будет назначенный учителем набор из 6 карточек. В макете показана структура, настоящих назначений пока нет.':a==='course'?'Знакомство → Моя семья → В школе. По два коротких урока в каждой теме.':'Присоединение к школе по ссылке или коду, карточки учителя и рейтинг класса.';document.querySelector('.feedback').classList.add('hidden');document.querySelector('.report').classList.add('hidden');document.querySelector('.correction').classList.add('hidden');document.querySelector('#report-status').textContent='';document.querySelectorAll('textarea').forEach(t=>t.value='');dialog.showModal()});
+document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>{const f=document.querySelector('.feedback');f.textContent=b.dataset.correct==='true'?'Совпадает с переводом в датасете.':'Попробуй первый вариант: он взят из датасета.';f.classList.remove('hidden');document.querySelector('.report').classList.remove('hidden')});
+document.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>{document.querySelector('.correction').classList.toggle('hidden',b.dataset.vote!=='no');document.querySelector('#report-status').textContent=b.dataset.vote==='yes'?'Спасибо! В рабочем приложении оценка будет сохранена.':''});
+document.querySelector('#send-report').onclick=()=>{const reason=document.querySelector('#reason');if(!reason.value.trim()){document.querySelector('#report-status').textContent='Укажи причину или напиши «не понимаю перевод».';reason.focus();return}document.querySelector('#report-status').textContent='Предпросмотр: замечание попадёт в очередь проверки. В этом макете оно не сохраняется.'};
+</script></body></html>

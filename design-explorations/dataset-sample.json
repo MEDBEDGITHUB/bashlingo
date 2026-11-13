@@ -1,0 +1,104 @@
+{
+  "features": [
+    {
+      "feature_idx": 0,
+      "name": "id",
+      "type": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    {
+      "feature_idx": 1,
+      "name": "text_ba",
+      "type": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    {
+      "feature_idx": 2,
+      "name": "text_ru",
+      "type": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    {
+      "feature_idx": 3,
+      "name": "text_other",
+      "type": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    {
+      "feature_idx": 4,
+      "name": "lang_other",
+      "type": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "row_idx": 0,
+      "row": {
+        "id": "bgpu-alt-00001",
+        "text_ba": "Һаумыһығыҙ!",
+        "text_ru": "Здравствуйте!",
+        "text_other": "Јакшылар!",
+        "lang_other": "alt"
+      },
+      "truncated_cells": []
+    },
+    {
+      "row_idx": 1,
+      "row": {
+        "id": "bgpu-alt-00002",
+        "text_ba": "Хәйерле көн (иртә, кис)!",
+        "text_ru": "Добрый(-ое) день (утро, вечер)!",
+        "text_other": "Јакшылыкту таҥла!",
+        "lang_other": "alt"
+      },
+      "truncated_cells": []
+    },
+    {
+      "row_idx": 2,
+      "row": {
+        "id": "bgpu-alt-00003",
+        "text_ba": "Сәләм!",
+        "text_ru": "Привет!",
+        "text_other": "Јакшы!",
+        "lang_other": "alt"
+      },
+      "truncated_cells": []
+    },
+    {
+      "row_idx": 3,
+      "row": {
+        "id": "bgpu-alt-00004",
+        "text_ba": "Рәхим итегеҙ!",
+        "text_ru": "Добро пожаловать!",
+        "text_other": "Кӱӱнзеп келигер!",
+        "lang_other": "alt"
+      },
+      "truncated_cells": []
+    },
+    {
+      "row_idx": 4,
+      "row": {
+        "id": "bgpu-alt-00005",
+        "text_ba": "Мин һеҙҙе күреүемә шатмын!",
+        "text_ru": "Я рад(-а) вас видеть!",
+        "text_other": "Кӧрӱшкениске сӱӱнедим!",
+        "lang_other": "alt"
+      },
+      "truncated_cells": []
+    }
+  ],
+  "num_rows_total": 1421,
+  "num_rows_per_page": 100,
+  "partial": false
+}
