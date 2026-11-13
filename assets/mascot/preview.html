@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bashlingo — куница в движении</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fffef9;color:#233b31;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:40px 24px}h1{font-size:36px;line-height:1.15;margin:8px 0 16px}h2{font-size:22px;margin-top:36px}p{max-width:740px}.label{color:#237a46;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}.card{border:1px solid #dce4d8;border-radius:20px;padding:20px;background:#f0f5e9;text-align:center}.card img{width:100%;max-width:280px;aspect-ratio:1;object-fit:contain}.card h3{margin:6px 0;font-size:18px}.card p{font-size:14px;margin:6px 0;color:#52614e}button,a{color:inherit}button{font:inherit;background:#237a46;color:white;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;margin:5px 8px 5px 0}button:focus-visible,a:focus-visible{outline:3px solid #dc941c;outline-offset:4px}body.dark{background:#192a23;color:#f7f5e8}.dark .card{background:#263d31;border-color:#4d6555}.dark .card p{color:#d5ddcf}.dark .label{color:#b7ec70}footer{margin-top:32px;font-size:14px} @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+<main><div class="label">BASHLINGO / МАСКОТ</div><h1>Знакомая куница. Новые жесты.</h1><p>Спокойное моргание, короткое приветствие и позы для разных моментов урока.</p><button id="pause" aria-pressed="false">Остановить анимации</button><button id="theme" aria-pressed="false">Тёмный фон</button>
+<h2>В движении</h2><div class="grid">
+<article class="card"><img data-animation="blink" data-still="idle" src="poses-v1/idle.png" alt="Куница спокойно моргает"><h3>Моргание</h3><p>Короткое моргание раз в 4,2 секунды.</p><a href="poses-v1/blink.webp" download>Скачать WebP</a> · <a href="poses-v1/blink.apng" download>APNG</a></article>
+<article class="card"><img data-animation="wave" data-still="wave-out" src="poses-v1/wave-out.png" alt="Куница приветственно машет лапой"><h3>Приветствие</h3><p>Два небольших взмаха и пауза. Цикл 3,2 секунды.</p><a href="poses-v1/wave.webp" download>Скачать WebP</a> · <a href="poses-v1/wave.apng" download>APNG</a></article>
+</div><h2>Позы для урока</h2><div class="grid">
+<article class="card"><img src="poses-v1/idle.png" alt="Спокойная куница"><h3>Готова к уроку</h3><a download href="poses-v1/idle.png">PNG</a></article>
+<article class="card"><img src="poses-v1/thinking.png" alt="Куница держит лапу у подбородка"><h3>Думает</h3><a download href="poses-v1/thinking.png">PNG</a></article>
+<article class="card"><img src="poses-v1/explaining.png" alt="Куница указывает вправо"><h3>Подсказывает</h3><a download href="poses-v1/explaining.png">PNG</a></article>
+<article class="card"><img src="poses-v1/success.png" alt="Куница радостно поднимает лапы"><h3>Получилось!</h3><a download href="poses-v1/success.png">PNG</a></article>
+</div><footer>Все изображения с прозрачным фоном. <a href="poses-v1/spritesheet.png">Лист кадров</a> · <a href="poses-v1/manifest.json">Кадры и тайминги</a>. Повторы на этой странице демонстрационные; в приложение анимации ещё не встроены.</footer></main>
+<script>
+let paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pause=document.getElementById('pause');
+function render(){document.querySelectorAll('[data-animation]').forEach(img=>img.src='poses-v1/'+(paused?img.dataset.still+'.png':img.dataset.animation+'.webp'));pause.textContent=paused?'Запустить анимации':'Остановить анимации';pause.setAttribute('aria-pressed',String(paused));}
+pause.onclick=()=>{paused=!paused;render()};document.getElementById('theme').onclick=e=>{const dark=document.body.classList.toggle('dark');e.target.setAttribute('aria-pressed',String(dark));e.target.textContent=dark?'Светлый фон':'Тёмный фон'};render();
+</script></html>

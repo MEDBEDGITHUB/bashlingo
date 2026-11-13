@@ -1,0 +1,97 @@
+{
+  "cell_size": [
+    418,
+    418
+  ],
+  "order": [
+    "idle",
+    "blink-half",
+    "blink-closed",
+    "wave-out",
+    "wave-center",
+    "wave-in",
+    "thinking",
+    "explaining",
+    "success"
+  ],
+  "sequences": {
+    "blink": {
+      "indices": [
+        0,
+        1,
+        2,
+        1,
+        0
+      ],
+      "durations": [
+        3200,
+        80,
+        110,
+        80,
+        730
+      ],
+      "encoded_durations_ms": [
+        3200.0,
+        80.0,
+        110.0,
+        80.0,
+        730.0
+      ],
+      "total_ms": 4200
+    },
+    "wave": {
+      "indices": [
+        3,
+        4,
+        5,
+        4,
+        3,
+        4,
+        5,
+        4,
+        3
+      ],
+      "durations": [
+        500,
+        120,
+        180,
+        120,
+        180,
+        120,
+        180,
+        120,
+        1680
+      ],
+      "encoded_durations_ms": [
+        500.0,
+        120.0,
+        180.0,
+        120.0,
+        180.0,
+        120.0,
+        180.0,
+        120.0,
+        1680.0
+      ],
+      "total_ms": 3200
+    }
+  },
+  "reference_sha256": "712ce5d999e287c59714f88ce48c08db3e9d993951d25efe406dbb0136ccf958",
+  "files": {
+    "blink-closed.png": "5395716932815354ecb414eea3e8d0af31a3acd42dab4465060f923d4bc2693b",
+    "blink-half.png": "80d5e3d11b704aa702e5aab6d9d114c2190e320ded1a8be3ad5e86e38c2e7d71",
+    "blink.apng": "9e9aef269ba79b5fb2e1a79815ab5a1e693c4db10ebe15f73e2f5ed2bbe1f736",
+    "blink.webp": "2eed58fe3a25a2a45cd1cd5f02d87c8d894e567eb35b75799741fedaacb863bd",
+    "explaining.png": "1ba08fdd7d682fd00c9c90ad92585c1201ccab5e516b5018dedce20516b2e877",
+    "idle.png": "3f4ac22fd59e8939bb4cd29edbc1abfcac42eb916d49aea4db9e8f911fdb58ec",
+    "spritesheet.png": "44ecea8d50a04e98c81a4af055ad3c5b99aa9c719fe4fd74f9f7a1a388c75a44",
+    "success.png": "36a68690f2da44e1b40fd532a681889961b427c98354615abe7bca343ef09bc3",
+    "thinking.png": "7b21b17140c98b12f1d67603aa968bba56a3a9cd43deb7dedbcd7ff59d2a7abb",
+    "wave-center.png": "2504b15f814b29bb38f04e46fc39cc4944b0f9a796c1efec8032da08e3f85e57",
+    "wave-in.png": "64430526dfa1204c0f88d6640d1a253ab7dc0d523bf4afd65990538ee5afd9a6",
+    "wave-out.png": "9ee861cf1e2803d6aa6156128194d13c642947731d1357782da8004ddd3c5a30",
+    "wave.apng": "b97721569f9925b50cbbb7cc071848b0869222da6ed455c6b5b878d596e49aec",
+    "wave.webp": "e81878ed3b4c4c58aea6fc3a6aea4bddeb48317476b6050a90450c4beb004789"
+  },
+  "scope": "Authored preview timing; no app runtime contract or integration. Two small pose animations, not full skeletal animation."
+}
