@@ -1,22 +1,38 @@
-import { q, one } from './db';
+import { q, one } from './db.js';
 
 const PERIODS = { day: '1 day', week: '7 days', month: '1 month', year: '1 year' };
 // Ключ учтённого прохождения для задания: slug урока или 'set:<id>' для набора учителя
 const A_KEY = `COALESCE(a.lesson_slug, 'set:' || a.set_id)`;
 
-export async function leaderboard(classId, period = 'week') {
+export const METRICS = {
+  xp: { label: 'Опыт', unit: 'XP' },
+  words: { label: 'Словарный запас', unit: 'фраз' },
+  accuracy: { label: 'Меньше ошибок', unit: '%' },
+  fixes: { label: 'Исправления', unit: '' },
+};
+
+// Рейтинг класса за период по выбранному показателю (ТЗ 4.5).
+// words: сколько разных фраз ученик ответил верно; accuracy: доля верных ответов (от 5 ответов);
+// fixes: найденные подмены перевода и предложенные исправления.
+export async function leaderboard(classId, period = 'week', metric = 'xp') {
   if (!Number.isInteger(classId)) return [];
   const interval = PERIODS[period] ?? PERIODS.week;
-  return q(
-    `SELECT u.id, u.name, COALESCE(sum(e.amount), 0)::int AS xp
-       FROM users u
-       LEFT JOIN xp_events e ON e.user_id = u.id AND e.created_at >= now() - $2::interval
-      WHERE u.class_id = $1
-      GROUP BY u.id, u.name
-      ORDER BY xp DESC, u.name
-      LIMIT 50`,
+  const m = METRICS[metric] ? metric : 'xp';
+  const value = {
+    xp: `COALESCE((SELECT sum(e.amount) FROM xp_events e WHERE e.user_id = u.id AND e.created_at >= now() - $2::interval), 0)`,
+    words: `(SELECT count(DISTINCT a.fragment_id) FROM answers a WHERE a.user_id = u.id AND a.correct AND a.created_at >= now() - $2::interval)`,
+    accuracy: `(SELECT CASE WHEN count(*) >= 5 THEN round(100.0 * count(*) FILTER (WHERE a.correct) / count(*)) END
+                   FROM answers a WHERE a.user_id = u.id AND a.created_at >= now() - $2::interval)`,
+    fixes: `((SELECT count(*) FROM checks c WHERE c.user_id = u.id AND c.verdict = 'wrong' AND c.created_at >= now() - $2::interval)
+             + (SELECT count(*) FROM reports r WHERE r.user_id = u.id AND r.proposed IS NOT NULL AND r.created_at >= now() - $2::interval))`,
+  }[m];
+  const rows = await q(
+    `SELECT u.id, u.name, ${value}::int AS xp
+       FROM users u WHERE u.class_id = $1
+      ORDER BY xp DESC NULLS LAST, u.name LIMIT 50`,
     [classId, interval]
   );
+  return rows.map((r) => ({ ...r, xp: r.xp ?? null }));
 }
 
 export async function classAssignments(classId, userId = null) {

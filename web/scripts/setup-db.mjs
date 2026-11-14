@@ -104,6 +104,43 @@ async function main() {
     await db.query('UPDATE classes SET teacher_id = $1 WHERE id = $2', [t.rows[0].id, orphan.rows[0].id]);
     console.log('Демо-школа: код SIBAY1, учитель демо-класса создан');
   }
+  // Демо-замечания к переводам: у одной фразы согласие учеников (статус community), у другой разброс (экспертам)
+  const seeded = await db.query(`SELECT 1 FROM reports r JOIN users u ON u.id = r.user_id WHERE u.name = 'Айсылу' LIMIT 1`);
+  if (!seeded.rowCount) {
+    const mates = (await db.query(`SELECT id, name FROM users WHERE class_id IS NOT NULL AND role = 'student' AND name IN ('Айсылу','Тимур','Лилия','Азат','Гульназ')`)).rows;
+    const votes = {
+      'bgpu-kk-00007': Object.fromEntries(mates.map((m) => [m.name, 'Всё хорошо'])),
+      'bgpu-kk-00010': { 'Айсылу': 'Как жаль!', 'Тимур': 'Очень жаль', 'Лилия': 'Как жаль!' },
+    };
+    for (const [fid, byName] of Object.entries(votes)) {
+      for (const m of mates) {
+        if (!byName[m.name]) continue;
+        await db.query(`INSERT INTO reports (user_id, fragment_id, reason, proposed) VALUES ($1, $2, 'Перевод неточный', $3)`, [m.id, fid, byName[m.name]]);
+      }
+    }
+    console.log('Демо-замечания к переводам добавлены');
+  }
+  // Демо-активность одноклассников, чтобы рейтинги «словарный запас», «меньше ошибок» и «исправления» не были пустыми
+  const hasAnswers = await db.query(`SELECT 1 FROM answers a JOIN users u ON u.id = a.user_id WHERE u.name = 'Айсылу' LIMIT 1`);
+  if (!hasAnswers.rowCount) {
+    const frags = (await db.query(`SELECT id, translation_auto FROM fragments WHERE origin = 'dataset' ORDER BY id`)).rows;
+    const plan = { 'Айсылу': [20, 2, 3], 'Тимур': [15, 3, 2], 'Лилия': [11, 4, 1], 'Азат': [8, 5, 0], 'Гульназ': [5, 4, 0] };
+    for (const [name, [good, bad, fixes]] of Object.entries(plan)) {
+      const u = (await db.query(`SELECT id FROM users WHERE name = $1 AND role = 'student' AND class_id IS NOT NULL ORDER BY created_at LIMIT 1`, [name])).rows[0];
+      if (!u) continue;
+      for (let i = 0; i < good + bad; i++) {
+        await db.query(`INSERT INTO answers (user_id, fragment_id, exercise, correct) VALUES ($1, $2, 'choose', $3)`, [u.id, frags[i % frags.length].id, i < good]);
+      }
+      for (let i = 0; i < fixes; i++) {
+        const f = frags[i], other = frags[(i + 7) % frags.length];
+        await db.query(
+          `INSERT INTO checks (user_id, fragment_id, shown, planted, verdict, correction) VALUES ($1, $2, $3, true, 'wrong', $4)`,
+          [u.id, f.id, other.translation_auto, f.translation_auto]
+        );
+      }
+    }
+    console.log('Демо-активность добавлена');
+  }
   await db.query('COMMIT');
   await db.end();
   console.log('База готова.');

@@ -1,4 +1,4 @@
-import { q, one } from './db';
+import { q, one } from './db.js';
 
 export async function getPath(userId) {
   const lessons = await q(
@@ -92,15 +92,20 @@ function shuffle(arr) {
 const tokens = (s) => s.trim().split(/\s+/);
 const buildable = (f) => !/[()…\-–]|\.\.\./.test(f.text_ba) && tokens(f.text_ba).length >= 2 && tokens(f.text_ba).length <= 6;
 
-export function buildExercises(frags, pool) {
+export function buildExercises(frags, pool, { verify = false, simple = false } = {}) {
   const others = (f) => pool.filter((p) => p.id !== f.id && p.text_ru !== f.text_ru);
   const out = [];
   frags.forEach((f, i) => {
-    if (i === 3 && frags.length >= 4) {
+    if (i === 3 && frags.length >= 4 && !simple) {
       const pairs = frags.slice(0, 4).map((p) => ({ id: p.id, ba: p.text_ba, ru: p.text_ru }));
       out.push({ type: 'match', pairs, ruOrder: shuffle(pairs.map((p) => p.id)) });
     }
-    if (i % 3 === 2 && buildable(f)) {
+    if (verify && (i === 1 || i === 3) && others(f).length >= 2) {
+      // Проверка перевода (ТЗ 4.3): примерно в половине случаев подставляем перевод другой фразы
+      const wrong = shuffle(others(f)).slice(0, 2).map((o) => o.text_ru);
+      const planted = Math.random() < 0.5;
+      out.push({ type: 'verify', fragment: f, shown: planted ? wrong[0] : f.text_ru, options: shuffle([f.text_ru, ...wrong]) });
+    } else if (!simple && i % 3 === 2 && buildable(f)) {
       const extra = shuffle(others(f).flatMap((o) => tokens(o.text_ba)))
         .filter((t) => !tokens(f.text_ba).includes(t))
         .slice(0, 3);

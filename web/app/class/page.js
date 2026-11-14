@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { currentUser } from '@/lib/user';
-import { leaderboard, classAssignments, schoolBoard } from '@/lib/classes';
+import { leaderboard, classAssignments, schoolBoard, METRICS } from '@/lib/classes';
 import { TopBar, TabBar } from '../components';
 import JoinClass from './JoinClass';
 
@@ -21,6 +21,8 @@ export default async function ClassPage({ searchParams }) {
   if (user.role === 'teacher') redirect('/teacher');
   const sp = await searchParams;
   const period = PERIODS.some(([p]) => p === sp?.period) ? sp.period : 'week';
+  const metric = METRICS[sp?.metric] ? sp.metric : 'xp';
+  const unit = METRICS[metric].unit;
 
   if (!user.class_id) {
     return (
@@ -37,7 +39,7 @@ export default async function ClassPage({ searchParams }) {
     );
   }
 
-  const [rows, homework, schools] = await Promise.all([leaderboard(user.class_id, period), classAssignments(user.class_id, user.id), schoolBoard()]);
+  const [rows, homework, schools] = await Promise.all([leaderboard(user.class_id, period, metric), classAssignments(user.class_id, user.id), schoolBoard()]);
   const hw = homework.find((h) => !h.mine) ?? null;
   const rest = homework.filter((h) => h !== hw);
   const top = schools[0]?.xp || 1;
@@ -66,12 +68,17 @@ export default async function ClassPage({ searchParams }) {
         <div className="shield">{user.class_name?.replace(/[«»\s]/g, '').slice(0, 3)}</div>
         <div>
           <b>Рейтинг класса</b>
-          <span>{user.school_name}{user.school_city ? `, ${user.school_city}` : ''} · топ-3 получают бейдж</span>
+          <span>{user.school_name}{user.school_city ? `, ${user.school_city}` : ''} · рейтинг обновляется каждый день</span>
         </div>
       </div>
       <nav className="seg">
         {PERIODS.map(([p, label]) => (
-          <Link key={p} href={`/class?period=${p}`} className={p === period ? 'on' : ''}>{label}</Link>
+          <Link key={p} href={`/class?period=${p}&metric=${metric}`} className={p === period ? 'on' : ''}>{label}</Link>
+        ))}
+      </nav>
+      <nav className="seg metrics">
+        {Object.entries(METRICS).map(([k, mm]) => (
+          <Link key={k} href={`/class?period=${period}&metric=${k}`} className={k === metric ? 'on' : ''}>{mm.label}</Link>
         ))}
       </nav>
       {rows.map((r, i) => (
@@ -80,9 +87,9 @@ export default async function ClassPage({ searchParams }) {
             <span className="n">{i + 1}</span>
             <span className="av" style={{ background: r.id === user.id ? 'var(--green)' : COLORS[i % COLORS.length] }}>{r.name[0]?.toUpperCase()}</span>
             <span className="nm">{r.id === user.id ? `${r.name} (вы)` : r.name}</span>
-            <span className="xp">{r.xp} XP</span>
+            <span className="xp">{r.xp == null ? '—' : `${r.xp}${unit ? ` ${unit}` : ''}`}</span>
           </div>
-          {i === 2 && rows.length > 3 && <div className="zone">▲ зона бейджа</div>}
+          {i === 2 && rows.length > 3 && <div className="zone">▲ топ-3</div>}
         </div>
       ))}
       {schools.length > 0 && (

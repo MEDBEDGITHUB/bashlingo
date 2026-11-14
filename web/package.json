@@ -7,12 +7,15 @@
     "build": "next build",
     "start": "next start -p 3000",
     "db:setup": "node --env-file=.env scripts/setup-db.mjs",
-    "login-link": "node --env-file=.env scripts/login-link.mjs"
+    "login-link": "node --env-file=.env scripts/login-link.mjs",
+    "bot": "node --env-file=.env scripts/bot.mjs",
+    "setup:prod": "node scripts/setup-db.mjs"
   },
   "dependencies": {
     "next": "^15.3.0",
     "pg": "^8.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
-  }
+  },
+  "type": "module"
 }

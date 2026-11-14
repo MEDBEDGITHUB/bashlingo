@@ -3,6 +3,8 @@ import { currentUser, LEVELS } from '@/lib/user';
 import { one } from '@/lib/db';
 import { TopBar, TabBar } from '../components';
 import LoginLink from './LoginLink';
+import { BADGES } from '@/lib/badges';
+import { q } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +19,7 @@ export default async function Profile() {
     [user.id]
   );
   const level = LEVELS.find((l) => l.value === user.level);
+  const have = new Set((await q('SELECT badge FROM user_badges WHERE user_id = $1', [user.id])).map((r) => r.badge));
   return (
     <main className="app">
       <TopBar user={user} />
@@ -36,6 +39,18 @@ export default async function Profile() {
         <div><b>{stats.phrases}</b><span>фраз выучено</span></div>
         <div><b>{stats.dailies}</b><span>заданий дня</span></div>
         <div><b>{stats.reports}</b><span>замечаний к переводам</span></div>
+      </div>
+      <div className="page-pad" style={{ paddingTop: 0 }}>
+        <h2 className="h2" style={{ marginTop: 6 }}>Достижения · {have.size} из {Object.keys(BADGES).length}</h2>
+        <div className="badge-grid">
+          {Object.entries(BADGES).map(([id, b]) => (
+            <div key={id} className={`badge${have.has(id) ? '' : ' off'}`} title={b.hint}>
+              <span>{b.icon}</span>
+              <b>{b.title}</b>
+              <small>{have.has(id) ? 'получено' : b.hint}</small>
+            </div>
+          ))}
+        </div>
       </div>
       <LoginLink hasTelegram={user.has_telegram} />
       <TabBar active="/profile" role={user.role} />

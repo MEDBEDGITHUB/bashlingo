@@ -5,7 +5,7 @@ import { readJson } from '@/lib/session';
 import { accessibleSet } from '@/lib/classes';
 import { completeActivity, todayKey, LESSON_XP, DAILY_XP } from '@/lib/progress';
 
-const TYPES = new Set(['choose', 'build', 'match']);
+const TYPES = new Set(['choose', 'build', 'match', 'verify']);
 
 export async function POST(req) {
   const user = await currentUser();
@@ -15,7 +15,14 @@ export async function POST(req) {
   const results = (Array.isArray(body.results) ? body.results : [])
     .slice(0, 60)
     .filter((r) => r && typeof r.fragmentId === 'string' && TYPES.has(r.type))
-    .map((r) => ({ fragmentId: r.fragmentId.slice(0, 40), type: r.type, correct: Boolean(r.correct) }));
+    .map((r) => ({
+      fragmentId: r.fragmentId.slice(0, 40),
+      type: r.type,
+      correct: Boolean(r.correct),
+      shown: typeof r.shown === 'string' ? r.shown : undefined,
+      verdict: r.verdict,
+      correction: typeof r.correction === 'string' ? r.correction : undefined,
+    }));
 
   let key;
   let baseXp = LESSON_XP;

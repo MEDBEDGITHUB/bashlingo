@@ -37,7 +37,7 @@ export default async function LessonPage({ params }) {
     frags = await lessonFragments(slug);
     pool = await distractorPool(slug);
   }
-  const exercises = buildExercises(frags, pool);
+  const exercises = buildExercises(frags, pool, { verify: slug === 'daily' });
   return (
     <main className="app bare">
       <Lesson slug={slug} title={title} kicker={kicker} exercises={exercises} reasons={REASONS} home={user.role === 'teacher' && slug.startsWith('set-') ? '/teacher' : '/'} />

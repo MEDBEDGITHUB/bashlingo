@@ -141,3 +141,37 @@ CREATE TABLE IF NOT EXISTS card_set_items (
 ALTER TABLE assignments ALTER COLUMN lesson_slug DROP NOT NULL;
 ALTER TABLE assignments ADD COLUMN IF NOT EXISTS set_id int REFERENCES card_sets(id) ON DELETE CASCADE;
 ALTER TABLE assignments ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT now();
+
+-- ---------------------------------------------------------------------------
+-- v3: проверка переводов в задании дня, бейджи, состояние Telegram-бота
+-- ---------------------------------------------------------------------------
+
+-- Проверка перевода (ТЗ 4.3): ученику показывают фрагмент и перевод, иногда подмешан заведомо неверный.
+-- verdict: 'ok' (подтвердил) или 'wrong' (исправил); planted = перевод был подменён нами.
+CREATE TABLE IF NOT EXISTS checks (
+  id          bigserial PRIMARY KEY,
+  user_id     uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  fragment_id text NOT NULL REFERENCES fragments(id),
+  shown       text NOT NULL,
+  planted     boolean NOT NULL,
+  verdict     text NOT NULL CHECK (verdict IN ('ok', 'wrong')),
+  correction  text,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS checks_fragment ON checks (fragment_id);
+
+CREATE TABLE IF NOT EXISTS user_badges (
+  user_id    uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  badge      text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (user_id, badge)
+);
+
+-- Состояние диалога бота (FSM) хранится в базе, чтобы переживать перезапуск
+CREATE TABLE IF NOT EXISTS bot_state (
+  chat_id    bigint PRIMARY KEY,
+  user_id    uuid REFERENCES users(id) ON DELETE CASCADE,
+  state      text NOT NULL DEFAULT 'idle',
+  data       jsonb NOT NULL DEFAULT '{}',
+  updated_at timestamptz NOT NULL DEFAULT now()
+);

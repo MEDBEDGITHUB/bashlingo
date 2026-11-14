@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { BADGES } from '@/lib/badges';
 
 const norm = (s) => s.toLowerCase().replace(/[.,!?¿¡«»"“”:;]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -43,6 +44,13 @@ export default function Lesson({ slug, title, kicker, exercises, reasons, home =
     const fragmentIds = ex.type === 'match' ? ex.pairs.map((p) => p.id) : [ex.fragment.id];
     setResults((r) => [...r, ...fragmentIds.map((id) => ({ fragmentId: id, type: ex.type, correct }))]);
     setChecked({ correct, ...extra });
+  }
+
+  function checkVerify({ verdict, correction }) {
+    const planted = ex.shown !== ex.fragment.text_ru;
+    const correct = planted ? verdict === 'wrong' && correction === ex.fragment.text_ru : verdict === 'ok';
+    setResults((r) => [...r, { fragmentId: ex.fragment.id, type: 'verify', correct, shown: ex.shown, verdict, correction }]);
+    setChecked({ correct, planted });
   }
 
   function submit() {
@@ -91,6 +99,13 @@ export default function Lesson({ slug, title, kicker, exercises, reasons, home =
           <div className="stat g"><small>Точность</small><b>{summary.accuracy}%</b></div>
           <div className="stat"><small>Серия</small><b>🔥 {summary.streak ?? '—'}</b></div>
         </div>
+        {summary.badges?.length > 0 && (
+          <div className="badges-won">
+            {summary.badges.map((b) => (
+              <div key={b} className="badge-won"><span>{BADGES[b]?.icon}</span><b>Новое достижение</b>{BADGES[b]?.title}</div>
+            ))}
+          </div>
+        )}
         {summary.repeat && <p style={{ fontSize: 14, color: 'var(--muted)', marginTop: -10 }}>За повторное прохождение опыт не начисляется.</p>}
         <button className="btn btn-g" style={{ maxWidth: 320 }} onClick={() => { router.push(home); router.refresh(); }}>Продолжить</button>
       </div>
@@ -108,12 +123,19 @@ export default function Lesson({ slug, title, kicker, exercises, reasons, home =
         {ex.type === 'choose' && <Choose ex={ex} answer={answer} setAnswer={setAnswer} checked={checked} speak={speak} />}
         {ex.type === 'build' && <Build key={idx} ex={ex} answer={answer ?? []} setAnswer={setAnswer} checked={checked} />}
         {ex.type === 'match' && <Match key={idx} ex={ex} onDone={(mistakes) => check(mistakes === 0, { mistakes })} />}
+        {ex.type === 'verify' && <Verify key={idx} ex={ex} onDone={checkVerify} speak={speak} done={!!checked} />}
       </div>
 
       <div className={`foot${checked ? (checked.correct ? ' ok' : ' bad') : ''}`}>
         {checked && (
           <>
-            <h3>{checked.correct ? '✓ Отлично!' : ex.type === 'match' ? 'Почти! Были ошибки' : 'Правильный ответ:'}</h3>
+            <h3>
+              {ex.type === 'verify'
+                ? checked.planted
+                  ? checked.correct ? '✓ Вы нашли ошибку!' : 'Здесь была ошибка. Правильный перевод:'
+                  : checked.correct ? '✓ Перевод верный' : 'Перевод был верным:'
+                : checked.correct ? '✓ Отлично!' : ex.type === 'match' ? 'Почти! Были ошибки' : 'Правильный ответ:'}
+            </h3>
             {ex.type !== 'match' && <p>{ex.fragment.text_ba} — {ex.fragment.text_ru}</p>}
             {ex.type !== 'match' && (
               <button className="flag" onClick={() => setReport(ex.fragment)}>В переводе ошибка?</button>
@@ -124,6 +146,8 @@ export default function Lesson({ slug, title, kicker, exercises, reasons, home =
           <button className={`btn ${checked.correct ? 'btn-g' : 'btn-r'}`} onClick={next} disabled={saving}>
             {saving ? 'Сохраняем…' : 'Дальше'}
           </button>
+        ) : ex.type === 'verify' ? (
+          <p style={{ margin: 0, textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>Проверьте, правильно ли переведена фраза</p>
         ) : ex.type !== 'match' ? (
           <button className="btn btn-g" onClick={submit} disabled={!answer || (Array.isArray(answer) && !answer.length)}>
             Проверить
@@ -190,6 +214,48 @@ function Build({ ex, answer, setAnswer, checked }) {
           </button>
         ))}
       </div>
+    </>
+  );
+}
+
+function Verify({ ex, onDone, speak, done }) {
+  const [step, setStep] = useState('ask');
+  const [custom, setCustom] = useState('');
+  const planted = ex.shown !== ex.fragment.text_ru;
+  return (
+    <>
+      <div className="l-title">Правильно ли переведена фраза?</div>
+      <div className="say">
+        <img src="/thinking.png" alt="" />
+        <div className="bubble" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+          <span style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            {speak && <button className="tts" onClick={() => speak(ex.fragment.text_ba)} aria-label="Прослушать">🔊</button>}
+            {ex.fragment.text_ba}
+          </span>
+          <span style={{ fontSize: 17, fontWeight: 600, color: planted && done ? 'var(--red)' : 'var(--ink)' }}>{ex.shown}</span>
+        </div>
+      </div>
+      {step === 'ask' && !done && (
+        <div className="opts" style={{ gridTemplateColumns: '1fr 1fr', display: 'grid' }}>
+          <button className="btn btn-g" onClick={() => onDone({ verdict: 'ok' })}>Верно</button>
+          <button className="btn btn-w" onClick={() => setStep('fix')}>Ошибка</button>
+        </div>
+      )}
+      {step === 'fix' && !done && (
+        <>
+          <div className="l-kicker" style={{ marginBottom: 8 }}>Как правильно?</div>
+          <div className="opts">
+            {ex.options.filter((o) => o !== ex.shown).map((o, i) => (
+              <button key={o} className="opt" onClick={() => onDone({ verdict: 'wrong', correction: o })}><i>{i + 1}</i>{o}</button>
+            ))}
+          </div>
+          <details className="own">
+            <summary>Мой вариант</summary>
+            <textarea className="field" value={custom} onChange={(e) => setCustom(e.target.value)} maxLength={300} placeholder="Как вы бы перевели" />
+            <button className="btn btn-w" style={{ marginTop: 8 }} disabled={!custom.trim()} onClick={() => onDone({ verdict: 'wrong', correction: custom.trim() })}>Отправить мой вариант</button>
+          </details>
+        </>
+      )}
     </>
   );
 }
