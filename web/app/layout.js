@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Bashlingo — башкирский язык',
+  title: 'Ҙурбаш — башкирский язык',
   description: 'Учите башкирский короткими уроками: фразы, пары, сборка предложений.',
   icons: { icon: '/idle.png' },
 };

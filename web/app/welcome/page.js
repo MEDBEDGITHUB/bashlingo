@@ -9,6 +9,7 @@ export default async function Welcome() {
   return (
     <main className="app bare">
       <div className="hero">
+        <div className="brand">Ҙурбаш</div>
         <img src="/wave-out.png" alt="Куница машет лапой" />
       </div>
       <Onboarding levels={LEVELS} />

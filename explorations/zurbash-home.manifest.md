@@ -1,4 +1,4 @@
-# bashlingo-home — манифест данных
+# zurbash-home — манифест данных
 
 Датасет: `bashkorttele/trilingual-parallel-phrasebooks-bgpu`, конфиг `ba-ru-kk`, 1 397 строк. Поля: `id`, `text_ba`, `text_ru`, `text_other`, `lang_other`. Проверены первые 100 строк.
 

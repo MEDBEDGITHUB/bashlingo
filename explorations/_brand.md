@@ -1,4 +1,4 @@
-# Bashlingo — бренд для эксплорейшенов
+# Ҙурбаш — бренд для эксплорейшенов
 
 Снят с маскота (`assets/mascot/poses-v1`) и `assets/mascot/preview.html`.
 

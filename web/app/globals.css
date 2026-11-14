@@ -173,6 +173,7 @@ button { font: inherit; color: inherit; }
 .level.sel { border-color: #84b6e8; background: #eef5fd; box-shadow: 0 3px 0 #84b6e8; }
 .err { color: var(--red); font-weight: 600; font-size: 14px; margin: 8px 0; }
 .hero { background: var(--soft); text-align: center; padding: 24px 16px 0; }
+.brand { font-size: 30px; font-weight: 800; color: var(--green); letter-spacing: -.01em; line-height: 1; }
 .hero img { width: 160px; display: block; margin: 0 auto -8px; }
 .prof { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 16px; }
 .prof div { border: 2px solid var(--line); border-radius: 14px; padding: 10px 12px; }

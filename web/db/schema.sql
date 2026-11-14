@@ -1,4 +1,4 @@
--- Bashlingo: схема данных (PostgreSQL 13+)
+-- Ҙурбаш (Zurbash): схема данных (PostgreSQL 13+)
 
 CREATE TABLE IF NOT EXISTS units (
   slug      text PRIMARY KEY,
