@@ -13,8 +13,18 @@ if (!TOKEN) {
   process.exit(1);
 }
 const API = `${process.env.TELEGRAM_API_URL ?? "https://api.telegram.org"}/bot${TOKEN}`;
-const APP_URL = process.env.PUBLIC_URL ?? '';
-const HTTPS = APP_URL.startsWith('https://');
+// Публичный адрес: из файла .run/public_url (его обновляет scripts/run-laptop.sh, когда туннель меняет адрес) или из PUBLIC_URL
+import fs from 'node:fs';
+const urlFile = new URL('../.run/public_url', import.meta.url);
+function publicUrl() {
+  // Если файл есть, он главный (даже пустой: туннель ещё не поднят), иначе берём PUBLIC_URL
+  try {
+    return fs.readFileSync(urlFile, 'utf8').trim();
+  } catch {}
+  return process.env.PUBLIC_URL ?? '';
+}
+let APP_URL = publicUrl();
+const isHttps = () => APP_URL.startsWith('https://');
 
 const log = (...a) => console.log(new Date().toISOString(), ...a);
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -32,7 +42,21 @@ async function tg(method, params = {}) {
 }
 const send = (chat_id, text, extra = {}) => tg('sendMessage', { chat_id, text, parse_mode: 'HTML', ...extra });
 const kb = (rows) => ({ reply_markup: { inline_keyboard: rows } });
-const openApp = () => (HTTPS ? [[{ text: '📱 Открыть Ҙурбаш', web_app: { url: APP_URL } }]] : []);
+const openApp = () => (isHttps() ? [[{ text: '📱 Открыть Ҙурбаш', web_app: { url: APP_URL } }]] : []);
+
+async function syncMenuButton() {
+  const now = publicUrl();
+  if (now === APP_URL && syncMenuButton.done) return;
+  APP_URL = now;
+  syncMenuButton.done = true;
+  if (isHttps()) {
+    await tg('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Ҙурбаш', web_app: { url: APP_URL } } });
+    log('Кнопка Mini App:', APP_URL);
+  } else {
+    await tg('setChatMenuButton', { menu_button: { type: 'default' } });
+    log('PUBLIC_URL не https: кнопка Mini App сброшена');
+  }
+}
 
 // ---- состояние ----
 async function getState(chatId) {
@@ -325,8 +349,8 @@ async function main() {
       { command: 'help', description: 'Справка' },
     ],
   });
-  if (HTTPS) await tg('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Ҙурбаш', web_app: { url: APP_URL } } });
-  else log('PUBLIC_URL не https: кнопка Mini App не установлена');
+  await syncMenuButton();
+  setInterval(() => syncMenuButton().catch((e) => log('menu button:', e.message)), 20_000);
 
   let offset = 0;
   for (;;) {
