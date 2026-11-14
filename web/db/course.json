@@ -1,0 +1,519 @@
+{
+ "lang_pair": "ba-ru",
+ "source": {
+  "dataset": "bashkorttele/trilingual-parallel-phrasebooks-bgpu",
+  "config": "ba-ru-kk",
+  "url": "https://huggingface.co/datasets/bashkorttele/trilingual-parallel-phrasebooks-bgpu"
+ },
+ "units": [
+  {
+   "slug": "greetings",
+   "title": "Знакомство",
+   "icon": "👋",
+   "lessons": [
+    {
+     "slug": "hello",
+     "title": "Приветствия",
+     "phrases": [
+      "bgpu-kk-00001",
+      "bgpu-kk-00003",
+      "bgpu-kk-00004",
+      "bgpu-kk-00006",
+      "bgpu-kk-00007",
+      "bgpu-kk-00012",
+      "bgpu-kk-00010"
+     ]
+    },
+    {
+     "slug": "meet",
+     "title": "Знакомство и прощание",
+     "phrases": [
+      "bgpu-kk-00022",
+      "bgpu-kk-00026",
+      "bgpu-kk-00030",
+      "bgpu-kk-00031",
+      "bgpu-kk-00035",
+      "bgpu-kk-00038",
+      "bgpu-kk-00042"
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "family",
+   "title": "Семья",
+   "icon": "👪",
+   "lessons": [
+    {
+     "slug": "my-family",
+     "title": "Моя семья",
+     "phrases": [
+      "bgpu-kk-00197",
+      "bgpu-kk-00200",
+      "bgpu-kk-00202",
+      "bgpu-kk-00216",
+      "bgpu-kk-00217",
+      "bgpu-kk-00218",
+      "bgpu-kk-00225"
+     ]
+    },
+    {
+     "slug": "relatives",
+     "title": "Родные",
+     "phrases": [
+      "bgpu-kk-00220",
+      "bgpu-kk-00224",
+      "bgpu-kk-00226",
+      "bgpu-kk-00227",
+      "bgpu-kk-00228",
+      "bgpu-kk-00229",
+      "bgpu-kk-00230"
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "school",
+   "title": "Школа",
+   "icon": "🏫",
+   "lessons": [
+    {
+     "slug": "in-class",
+     "title": "На уроке",
+     "phrases": [
+      "bgpu-kk-00406",
+      "bgpu-kk-00408",
+      "bgpu-kk-00409",
+      "bgpu-kk-00422",
+      "bgpu-kk-00423",
+      "bgpu-kk-00424",
+      "bgpu-kk-00425",
+      "bgpu-kk-00437"
+     ]
+    },
+    {
+     "slug": "homework",
+     "title": "Домашнее задание",
+     "phrases": [
+      "bgpu-kk-00410",
+      "bgpu-kk-00414",
+      "bgpu-kk-00415",
+      "bgpu-kk-00418",
+      "bgpu-kk-00420",
+      "bgpu-kk-00429",
+      "bgpu-kk-00431",
+      "bgpu-kk-00432",
+      "bgpu-kk-00441"
+     ]
+    }
+   ]
+  }
+ ],
+ "fragments": {
+  "bgpu-kk-00001": {
+   "id": "bgpu-kk-00001",
+   "text_ba": "Һаумыһығыҙ!",
+   "text_ru": "Здравствуйте!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 1
+   }
+  },
+  "bgpu-kk-00003": {
+   "id": "bgpu-kk-00003",
+   "text_ba": "Сәләм!",
+   "text_ru": "Привет!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 3
+   }
+  },
+  "bgpu-kk-00004": {
+   "id": "bgpu-kk-00004",
+   "text_ba": "Рәхим итегеҙ!",
+   "text_ru": "Добро пожаловать!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 4
+   }
+  },
+  "bgpu-kk-00006": {
+   "id": "bgpu-kk-00006",
+   "text_ba": "Һеҙҙең хәлдәрегеҙ нисек?",
+   "text_ru": "Как у вас дела?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 6
+   }
+  },
+  "bgpu-kk-00007": {
+   "id": "bgpu-kk-00007",
+   "text_ba": "Бөтәһе лә яҡшы",
+   "text_ru": "Все хорошо",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 7
+   }
+  },
+  "bgpu-kk-00012": {
+   "id": "bgpu-kk-00012",
+   "text_ba": "Рәхмәт, яҡшы",
+   "text_ru": "Спасибо, хорошо",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 12
+   }
+  },
+  "bgpu-kk-00010": {
+   "id": "bgpu-kk-00010",
+   "text_ba": "Бик йәл!",
+   "text_ru": "Очень жаль!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 10
+   }
+  },
+  "bgpu-kk-00022": {
+   "id": "bgpu-kk-00022",
+   "text_ba": "Таныш булайыҡ!",
+   "text_ru": "Будем знакомы!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 22
+   }
+  },
+  "bgpu-kk-00026": {
+   "id": "bgpu-kk-00026",
+   "text_ba": "Минең исемем Лилиә",
+   "text_ru": "Мое имя Лилия",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 26
+   }
+  },
+  "bgpu-kk-00030": {
+   "id": "bgpu-kk-00030",
+   "text_ba": "Мин Сибай ҡалаһында йәшәйем",
+   "text_ru": "Я живу в городе Сибай",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 30
+   }
+  },
+  "bgpu-kk-00031": {
+   "id": "bgpu-kk-00031",
+   "text_ba": "Һеҙ ҡайҙан килдегеҙ?",
+   "text_ru": "Откуда вы приехали?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 31
+   }
+  },
+  "bgpu-kk-00035": {
+   "id": "bgpu-kk-00035",
+   "text_ba": "Һау булығыҙ!",
+   "text_ru": "До свидания!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 35
+   }
+  },
+  "bgpu-kk-00038": {
+   "id": "bgpu-kk-00038",
+   "text_ba": "Иртәгәгә тиклем!",
+   "text_ru": "До завтра!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 38
+   }
+  },
+  "bgpu-kk-00042": {
+   "id": "bgpu-kk-00042",
+   "text_ba": "Иртәгә күрешербеҙ!",
+   "text_ru": "Увидимся завтра!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 42
+   }
+  },
+  "bgpu-kk-00197": {
+   "id": "bgpu-kk-00197",
+   "text_ba": "Һеҙҙең ғаиләгеҙ бармы?",
+   "text_ru": "У вас есть семья?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 197
+   }
+  },
+  "bgpu-kk-00200": {
+   "id": "bgpu-kk-00200",
+   "text_ba": "Һеҙҙең ғаиләгеҙҙә нисә кеше?",
+   "text_ru": "Сколько человек в вашей семье?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 200
+   }
+  },
+  "bgpu-kk-00202": {
+   "id": "bgpu-kk-00202",
+   "text_ba": "Һеҙҙең кемдәрегеҙ бар?",
+   "text_ru": "Кто у вас есть?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 202
+   }
+  },
+  "bgpu-kk-00216": {
+   "id": "bgpu-kk-00216",
+   "text_ba": "Һеҙҙең апайығыҙ бармы?",
+   "text_ru": "У вас есть сестра?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 216
+   }
+  },
+  "bgpu-kk-00217": {
+   "id": "bgpu-kk-00217",
+   "text_ba": "Эйе, минең апайым бар",
+   "text_ru": "Да, у меня есть старшая сестра",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 217
+   }
+  },
+  "bgpu-kk-00218": {
+   "id": "bgpu-kk-00218",
+   "text_ba": "Уның ғаиләһе бармы?",
+   "text_ru": "У нее есть семья?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 218
+   }
+  },
+  "bgpu-kk-00225": {
+   "id": "bgpu-kk-00225",
+   "text_ba": "Бына ғаиләмдең фотоһүрәте",
+   "text_ru": "Вот фотография моей семьи",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 225
+   }
+  },
+  "bgpu-kk-00220": {
+   "id": "bgpu-kk-00220",
+   "text_ba": "Улы ҙурмы?",
+   "text_ru": "Сын большой?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 220
+   }
+  },
+  "bgpu-kk-00224": {
+   "id": "bgpu-kk-00224",
+   "text_ba": "Уға һикһән йәш",
+   "text_ru": "Ему (ей) восемьдесят лет",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 224
+   }
+  },
+  "bgpu-kk-00226": {
+   "id": "bgpu-kk-00226",
+   "text_ba": "Был мин",
+   "text_ru": "Это я",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 226
+   }
+  },
+  "bgpu-kk-00227": {
+   "id": "bgpu-kk-00227",
+   "text_ba": "Был минең апайым",
+   "text_ru": "Это моя сестра",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 227
+   }
+  },
+  "bgpu-kk-00228": {
+   "id": "bgpu-kk-00228",
+   "text_ba": "Уның исеме Айгөл",
+   "text_ru": "Ее зовут Айгуль",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 228
+   }
+  },
+  "bgpu-kk-00229": {
+   "id": "bgpu-kk-00229",
+   "text_ba": "Тәрбиәсе булып эшләй",
+   "text_ru": "Работает воспитателем",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 229
+   }
+  },
+  "bgpu-kk-00230": {
+   "id": "bgpu-kk-00230",
+   "text_ba": "Ә был минең ҡустым",
+   "text_ru": "А это мой брат (младший)",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 230
+   }
+  },
+  "bgpu-kk-00406": {
+   "id": "bgpu-kk-00406",
+   "text_ba": "Һаумыһығыҙ, студенттар!",
+   "text_ru": "Здравствуйте, студенты!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 406
+   }
+  },
+  "bgpu-kk-00408": {
+   "id": "bgpu-kk-00408",
+   "text_ba": "Ултырырға мөмкин!",
+   "text_ru": "Можете садиться!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 408
+   }
+  },
+  "bgpu-kk-00409": {
+   "id": "bgpu-kk-00409",
+   "text_ba": "Дәресте башлайбыҙ",
+   "text_ru": "Начинаем занятие",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 409
+   }
+  },
+  "bgpu-kk-00422": {
+   "id": "bgpu-kk-00422",
+   "text_ba": "Кем яуап бирә?",
+   "text_ru": "Кто будет отвечать?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 422
+   }
+  },
+  "bgpu-kk-00423": {
+   "id": "bgpu-kk-00423",
+   "text_ba": "Ҡулдарығыҙҙы күтәрегеҙ",
+   "text_ru": "Поднимите руки",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 423
+   }
+  },
+  "bgpu-kk-00424": {
+   "id": "bgpu-kk-00424",
+   "text_ba": "Таҡтаға сыҡ",
+   "text_ru": "Иди к доске",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 424
+   }
+  },
+  "bgpu-kk-00425": {
+   "id": "bgpu-kk-00425",
+   "text_ba": "Дөрөҫ яҙ",
+   "text_ru": "Пиши правильно",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 425
+   }
+  },
+  "bgpu-kk-00437": {
+   "id": "bgpu-kk-00437",
+   "text_ba": "Иғтибар менән тыңлағыҙ!",
+   "text_ru": "Слушайте внимательно!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 437
+   }
+  },
+  "bgpu-kk-00410": {
+   "id": "bgpu-kk-00410",
+   "text_ba": "Өйгә ниндәй эш бирелгән ине?",
+   "text_ru": "Что было задано на дом?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 410
+   }
+  },
+  "bgpu-kk-00414": {
+   "id": "bgpu-kk-00414",
+   "text_ba": "Беҙ бөтәбеҙ ҙә өйгә эште эшләнек",
+   "text_ru": "Мы все выполнили домашнее задание",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 414
+   }
+  },
+  "bgpu-kk-00415": {
+   "id": "bgpu-kk-00415",
+   "text_ba": "Мин өйгә эште эшләмәнем",
+   "text_ru": "Я не выполнил(-а) домашнее задание",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 415
+   }
+  },
+  "bgpu-kk-00418": {
+   "id": "bgpu-kk-00418",
+   "text_ba": "Мин уны аңламаным",
+   "text_ru": "Я его не понял(-а)",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 418
+   }
+  },
+  "bgpu-kk-00420": {
+   "id": "bgpu-kk-00420",
+   "text_ba": "Мин ауырыным",
+   "text_ru": "Я болел(-а)",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 420
+   }
+  },
+  "bgpu-kk-00429": {
+   "id": "bgpu-kk-00429",
+   "text_ba": "Бында хата ҡайҙа?",
+   "text_ru": "Где здесь ошибка?",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 429
+   }
+  },
+  "bgpu-kk-00431": {
+   "id": "bgpu-kk-00431",
+   "text_ba": "Хатаны мин төҙәтәм",
+   "text_ru": "Я исправлю ошибку",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 431
+   }
+  },
+  "bgpu-kk-00432": {
+   "id": "bgpu-kk-00432",
+   "text_ba": "Тағы бер тапҡыр ҡабатла",
+   "text_ru": "Повтори еще раз",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 432
+   }
+  },
+  "bgpu-kk-00441": {
+   "id": "bgpu-kk-00441",
+   "text_ba": "Дәрес бөттө!",
+   "text_ru": "Занятие окончено!",
+   "source": {
+    "doc": "Разговорник БГПУ (Bashkorttele)",
+    "row": 441
+   }
+  }
+ }
+}
