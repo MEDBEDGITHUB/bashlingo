@@ -1,5 +1,8 @@
 import pg from 'pg';
 
+// DATE отдаём строкой 'YYYY-MM-DD', иначе драйвер превращает её в полночь по местному времени и дата съезжает на день.
+pg.types.setTypeParser(1082, (v) => v);
+
 const globalForPg = globalThis;
 const pool =
   globalForPg.__blPool ??

@@ -25,7 +25,7 @@ function useBashkirVoice() {
     : null;
 }
 
-export default function Lesson({ slug, title, kicker, exercises, reasons }) {
+export default function Lesson({ slug, title, kicker, exercises, reasons, home = '/' }) {
   const router = useRouter();
   const speak = useBashkirVoice();
   const [idx, setIdx] = useState(0);
@@ -75,7 +75,7 @@ export default function Lesson({ slug, title, kicker, exercises, reasons }) {
         <img src="/thinking.png" alt="" />
         <h2>Пока пусто</h2>
         <p>Для этого урока ещё нет фраз.</p>
-        <Link className="btn btn-g" href="/">На главную</Link>
+        <Link className="btn btn-g" href={home}>На главную</Link>
       </div>
     );
   }
@@ -92,7 +92,7 @@ export default function Lesson({ slug, title, kicker, exercises, reasons }) {
           <div className="stat"><small>Серия</small><b>🔥 {summary.streak ?? '—'}</b></div>
         </div>
         {summary.repeat && <p style={{ fontSize: 14, color: 'var(--muted)', marginTop: -10 }}>За повторное прохождение опыт не начисляется.</p>}
-        <button className="btn btn-g" style={{ maxWidth: 320 }} onClick={() => { router.push('/'); router.refresh(); }}>Продолжить</button>
+        <button className="btn btn-g" style={{ maxWidth: 320 }} onClick={() => { router.push(home); router.refresh(); }}>Продолжить</button>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function Lesson({ slug, title, kicker, exercises, reasons }) {
   return (
     <div className="lesson">
       <div className="l-bar">
-        <Link className="x" href="/" aria-label="Выйти из урока">✕</Link>
+        <Link className="x" href={home} aria-label="Выйти из урока">✕</Link>
         <div className="l-track"><i style={{ width: `${progress * 100}%` }} /></div>
       </div>
       <div className="l-body">

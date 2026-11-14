@@ -26,7 +26,7 @@ SELECT f.id AS fragment_id, f.text_ba, f.lang_pair,
   LEFT JOIN totals t ON t.fragment_id = f.id
   LEFT JOIN best b ON b.fragment_id = f.id
   LEFT JOIN ok ON ok.fragment_id = f.id
- WHERE f.lang_pair = $1 AND ($2::text IS NULL OR
+ WHERE f.lang_pair = $1 AND f.origin = 'dataset' AND ($2::text IS NULL OR
        (CASE WHEN b.n >= 5 AND b.n >= 0.8 * t.voters THEN 'community'
              WHEN COALESCE(t.voters, 0) > 0 THEN 'expert_review' ELSE 'confirmed' END) = $2::text)
  ORDER BY f.id`;

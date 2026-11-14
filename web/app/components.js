@@ -10,16 +10,15 @@ export function TopBar({ user }) {
   );
 }
 
-const TABS = [
-  { href: '/', icon: '🏠', label: 'Учиться' },
-  { href: '/class', icon: '🏫', label: 'Класс' },
-  { href: '/profile', icon: '👤', label: 'Профиль' },
-];
-
-export function TabBar({ active }) {
+export function TabBar({ active, role }) {
+  const tabs = [
+    { href: '/', icon: '🏠', label: 'Учиться' },
+    role === 'teacher' ? { href: '/teacher', icon: '🍎', label: 'Мои классы' } : { href: '/class', icon: '🏫', label: 'Класс' },
+    { href: '/profile', icon: '👤', label: 'Профиль' },
+  ];
   return (
     <nav className="tabs">
-      {TABS.map((t) => (
+      {tabs.map((t) => (
         <Link key={t.href} href={t.href} className={active === t.href ? 'on' : ''}>
           <i aria-hidden>{t.icon}</i>
           {t.label}

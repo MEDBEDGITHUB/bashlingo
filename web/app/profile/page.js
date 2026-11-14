@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { currentUser, LEVELS } from '@/lib/user';
 import { one } from '@/lib/db';
 import { TopBar, TabBar } from '../components';
+import LoginLink from './LoginLink';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,8 +24,9 @@ export default async function Profile() {
       <div className="page-pad" style={{ paddingBottom: 0 }}>
         <h1 className="h1">{user.name}</h1>
         <p className="lead" style={{ margin: 0 }}>
-          {level?.title} · башкирский → русский
-          {user.class_name && <><br />{user.school_name}, {user.class_name}</>}
+          {user.role === 'teacher' ? 'Учитель' : level?.title} · башкирский → русский
+          {user.school_name && <><br />{[user.school_name, user.class_name].filter(Boolean).join(', ')}</>}
+          <br />Вход: {user.has_telegram ? 'Telegram и сайт' : 'сайт'}
         </p>
       </div>
       <div className="prof">
@@ -35,7 +37,8 @@ export default async function Profile() {
         <div><b>{stats.dailies}</b><span>заданий дня</span></div>
         <div><b>{stats.reports}</b><span>замечаний к переводам</span></div>
       </div>
-      <TabBar active="/profile" />
+      <LoginLink hasTelegram={user.has_telegram} />
+      <TabBar active="/profile" role={user.role} />
     </main>
   );
 }

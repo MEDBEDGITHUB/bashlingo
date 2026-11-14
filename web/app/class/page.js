@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { currentUser } from '@/lib/user';
-import { leaderboard, classAssignment, schoolBoard } from '@/lib/classes';
+import { leaderboard, classAssignments, schoolBoard } from '@/lib/classes';
 import { TopBar, TabBar } from '../components';
 import JoinClass from './JoinClass';
 
@@ -18,6 +18,7 @@ const COLORS = ['#2f6fb5', '#a8481f', '#dc941c', '#6b5bb5', '#2a8c8c', '#c8442f'
 export default async function ClassPage({ searchParams }) {
   const user = await currentUser();
   if (!user) redirect('/welcome');
+  if (user.role === 'teacher') redirect('/teacher');
   const sp = await searchParams;
   const period = PERIODS.some(([p]) => p === sp?.period) ? sp.period : 'week';
 
@@ -31,12 +32,14 @@ export default async function ClassPage({ searchParams }) {
           <p className="lead">Введите код, который дал учитель: появятся задания от учителя и рейтинг класса.</p>
           <JoinClass />
         </div>
-        <TabBar active="/class" />
+        <TabBar active="/class" role={user.role} />
       </main>
     );
   }
 
-  const [rows, hw, schools] = await Promise.all([leaderboard(user.class_id, period), classAssignment(user.class_id), schoolBoard()]);
+  const [rows, homework, schools] = await Promise.all([leaderboard(user.class_id, period), classAssignments(user.class_id, user.id), schoolBoard()]);
+  const hw = homework.find((h) => !h.mine) ?? null;
+  const rest = homework.filter((h) => h !== hw);
   const top = schools[0]?.xp || 1;
   return (
     <main className="app">
@@ -46,10 +49,19 @@ export default async function ClassPage({ searchParams }) {
           <small>🍎 От учителя · {user.class_name}</small>
           <b>{hw.title}</b>
           <p>{hw.cards} карточек · до {new Date(hw.due_date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })} · выполнили {hw.done} из {hw.members}</p>
-          <Link className="btn" href={`/lesson/${hw.lesson_slug}`}>Начать</Link>
+          <Link className="btn" href={`/lesson/${hw.href}`}>Начать</Link>
           <img src="/success.png" alt="" />
         </div>
       )}
+      {rest.map((h) => (
+        <Link key={h.id} href={`/lesson/${h.href}`} className={`card-row${h.mine ? ' done' : ''}`}>
+          <span className="ic">🍎</span>
+          <div style={{ flex: 1 }}>
+            <b>{h.title}</b>
+            <span>{h.mine ? 'Выполнено ✓' : `до ${new Date(h.due_date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}`} · выполнили {h.done} из {h.members}</span>
+          </div>
+        </Link>
+      ))}
       <div className="league">
         <div className="shield">{user.class_name?.replace(/[«»\s]/g, '').slice(0, 3)}</div>
         <div>
@@ -85,7 +97,7 @@ export default async function ClassPage({ searchParams }) {
           ))}
         </div>
       )}
-      <TabBar active="/class" />
+      <TabBar active="/class" role={user.role} />
     </main>
   );
 }

@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { currentUser } from '@/lib/user';
 import { getLesson, lessonFragments, dailyFragments, distractorPool, buildExercises } from '@/lib/course';
 import { todayKey } from '@/lib/progress';
+import { accessibleSet, setFragments } from '@/lib/classes';
 import { REASONS } from '@/lib/reasons';
 import Lesson from './Lesson';
 
@@ -21,6 +22,13 @@ export default async function LessonPage({ params }) {
     kicker = 'Задание дня';
     frags = await dailyFragments(user.level, todayKey());
     pool = await distractorPool(null);
+  } else if (/^set-\d{1,9}$/.test(slug)) {
+    const set = await accessibleSet(Number(slug.slice(4)), user);
+    if (!set) notFound();
+    title = set.title;
+    kicker = `От учителя · ${set.title}`;
+    frags = await setFragments(set.id);
+    pool = frags;
   } else {
     const lesson = await getLesson(slug);
     if (!lesson) notFound();
@@ -32,7 +40,7 @@ export default async function LessonPage({ params }) {
   const exercises = buildExercises(frags, pool);
   return (
     <main className="app bare">
-      <Lesson slug={slug} title={title} kicker={kicker} exercises={exercises} reasons={REASONS} />
+      <Lesson slug={slug} title={title} kicker={kicker} exercises={exercises} reasons={REASONS} home={user.role === 'teacher' && slug.startsWith('set-') ? '/teacher' : '/'} />
     </main>
   );
 }

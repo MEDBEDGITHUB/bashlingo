@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import pg from 'pg';
 
 const root = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
@@ -82,6 +83,26 @@ async function main() {
       if (xp > 300) await db.query(`INSERT INTO completions (user_id, key, xp) VALUES ($1, 'hello', 15)`, [u.rows[0].id]);
     }
     console.log('Демо-класс создан: код 7B2026');
+  }
+
+  // v2: коды школ и учитель демо-класса
+  await db.query(
+    `UPDATE schools s SET code = 'SIBAY1'
+      WHERE s.code IS NULL AND EXISTS (SELECT 1 FROM classes c WHERE c.school_id = s.id AND c.join_code = '7B2026')
+        AND NOT EXISTS (SELECT 1 FROM schools WHERE code = 'SIBAY1')`
+  );
+  const noCode = await db.query('SELECT id FROM schools WHERE code IS NULL');
+  for (const row of noCode.rows) {
+    await db.query('UPDATE schools SET code = $1 WHERE id = $2', [crypto.randomBytes(4).toString('hex').toUpperCase().slice(0, 6), row.id]);
+  }
+  const orphan = await db.query(`SELECT id, school_id FROM classes WHERE join_code = '7B2026' AND teacher_id IS NULL`);
+  if (orphan.rowCount) {
+    const t = await db.query(
+      `INSERT INTO users (name, level, role, school_id) VALUES ('Гульшат Ринатовна', 5, 'teacher', $1) RETURNING id`,
+      [orphan.rows[0].school_id]
+    );
+    await db.query('UPDATE classes SET teacher_id = $1 WHERE id = $2', [t.rows[0].id, orphan.rows[0].id]);
+    console.log('Демо-школа: код SIBAY1, учитель демо-класса создан');
   }
   await db.query('COMMIT');
   await db.end();

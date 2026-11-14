@@ -102,3 +102,42 @@ CREATE TABLE IF NOT EXISTS assignments (
   lesson_slug text NOT NULL REFERENCES lessons(slug),
   due_date    date NOT NULL
 );
+
+-- ---------------------------------------------------------------------------
+-- v2: роли, коды школ, кабинет учителя, наборы карточек, Telegram
+-- (ADD COLUMN IF NOT EXISTS: скрипт можно запускать повторно на существующей базе)
+-- ---------------------------------------------------------------------------
+
+-- Код школы: по нему учитель привязывается к школе
+ALTER TABLE schools ADD COLUMN IF NOT EXISTS code text UNIQUE;
+ALTER TABLE schools ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT now();
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role text NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'teacher'));
+-- Для учителя: школа, в которой он работает (у ученика школа определяется через класс)
+ALTER TABLE users ADD COLUMN IF NOT EXISTS school_id int REFERENCES schools(id);
+
+ALTER TABLE classes ADD COLUMN IF NOT EXISTS teacher_id uuid REFERENCES users(id) ON DELETE SET NULL;
+ALTER TABLE classes ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT now();
+
+-- origin: 'dataset' (корпус, идёт в выгрузку) или 'teacher' (карточка учителя, в выгрузку не идёт)
+ALTER TABLE fragments ADD COLUMN IF NOT EXISTS origin text NOT NULL DEFAULT 'dataset';
+ALTER TABLE fragments ADD COLUMN IF NOT EXISTS owner_id uuid REFERENCES users(id) ON DELETE SET NULL;
+
+CREATE TABLE IF NOT EXISTS card_sets (
+  id         serial PRIMARY KEY,
+  teacher_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title      text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS card_set_items (
+  set_id      int  NOT NULL REFERENCES card_sets(id) ON DELETE CASCADE,
+  fragment_id text NOT NULL REFERENCES fragments(id) ON DELETE CASCADE,
+  position    int  NOT NULL,
+  PRIMARY KEY (set_id, fragment_id)
+);
+
+-- Задание: либо урок курса (lesson_slug), либо набор учителя (set_id)
+ALTER TABLE assignments ALTER COLUMN lesson_slug DROP NOT NULL;
+ALTER TABLE assignments ADD COLUMN IF NOT EXISTS set_id int REFERENCES card_sets(id) ON DELETE CASCADE;
+ALTER TABLE assignments ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT now();
