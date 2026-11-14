@@ -1,0 +1,228 @@
+<!doctype html>
+<!--
+  Ҙурбаш — главный экран ученика: 4 учебных направления (Duolingo для башкирского)
+  Источник: Техническое задание.pdf, GRILL-ME.md; данные — bashkorttele/trilingual-parallel-phrasebooks-bgpu (ba-ru-kk)
+  Дата: 2026-11-13
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ҙурбаш — главный экран</title>
+<style>
+:root{--bg:#fffef9;--ink:#233b31;--muted:#5d6e60;--green:#237a46;--green-d:#175a32;--soft:#f0f5e9;--line:#dce4d8;--lime:#b7ec70;--amber:#dc941c;--amber-d:#a86d0e;--russet:#a8481f;--russet-d:#7c3315;--blue:#2f6fb5;--blue-d:#1f4f86}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+.doc{max-width:1320px;margin:0 auto;padding:40px 24px 64px}
+.eyebrow{color:var(--green);font-weight:700;letter-spacing:.06em;font-size:13px;text-transform:uppercase}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:40px;line-height:1.1;margin:8px 0 10px;font-weight:700}
+.sub{max-width:780px;color:var(--muted);margin:0 0 16px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:13px}
+.meta span{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;margin-top:36px}
+.var{display:flex;flex-direction:column;gap:14px;min-width:0}
+.var-h{display:flex;gap:12px;align-items:center}
+.letter{flex:none;width:34px;height:34px;border-radius:10px;background:var(--green);color:#fff;font-weight:800;display:grid;place-items:center;font-size:18px}
+.var-h h2{margin:0;font-size:21px;line-height:1.25}
+.trade{margin:0;font-size:14px;background:#fdf3df;border-left:4px solid var(--amber);padding:8px 12px;border-radius:0 10px 10px 0}
+.phone{width:100%;max-width:400px;margin:0 auto;height:780px;border:10px solid #1f2b25;border-radius:38px;background:#fff;overflow:hidden;position:relative;box-shadow:0 18px 40px rgba(35,59,49,.14)}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:76px;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.analysis{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-size:14px}
+.analysis b{color:var(--green)}
+.decide{margin-top:44px;border:2px solid var(--green);border-radius:20px;padding:22px 24px}
+.decide h2{margin:0 0 10px;font-size:22px}
+.decide ul{margin:0;padding-left:20px}
+.decide li{margin:6px 0}
+.note{margin-top:20px;font-size:13px;color:var(--muted)}
+
+.tabs{position:absolute;left:0;right:0;bottom:0;height:66px;background:#fff;border-top:2px solid var(--line);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:var(--muted);font-weight:600;z-index:3}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs i{font-style:normal;font-size:20px;line-height:1}
+.tabs .on{color:var(--green)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:2px solid var(--line);font-weight:800;font-size:15px;background:#fff;position:sticky;top:0;z-index:2}
+.top .pair{background:var(--soft);border-radius:10px;padding:4px 10px;font-size:13px}
+.fire{color:var(--amber)}
+.gem{color:var(--blue)}
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:14px;font:800 15px/1 "Segoe UI",system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-align:center}
+.btn-g{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-d)}
+.btn-w{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+
+.va-unit{margin:14px 14px 0;background:var(--green);color:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 4px 0 var(--green-d);display:flex;justify-content:space-between;align-items:center}
+.va-unit small{display:block;opacity:.85;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.va-unit b{font-size:19px}
+.va-guide{background:rgba(255,255,255,.18);border-radius:12px;padding:8px 10px;font-size:20px}
+.va-path{position:relative;height:500px}
+.va-node{position:absolute;width:72px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:26px;color:#fff;font-weight:800}
+.va-done{background:var(--amber);box-shadow:0 6px 0 var(--amber-d)}
+.va-cur{background:var(--green);box-shadow:0 6px 0 var(--green-d);outline:6px solid rgba(35,122,70,.18)}
+.va-lock{background:#e6ebe3;box-shadow:0 6px 0 #c9d2c5;color:#9aa69a}
+.va-start{position:absolute;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;font-weight:800;color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.va-mascot{position:absolute;width:140px}
+.va-sep{margin:0 14px;display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:700;font-size:13px}
+.va-sep:before,.va-sep:after{content:"";flex:1;height:2px;background:var(--line)}
+.va-unit2{background:var(--russet);box-shadow:0 4px 0 var(--russet-d);opacity:.55}
+
+.vb-cont{margin:14px 16px 0;border-radius:20px;background:var(--soft);padding:16px;display:flex;gap:12px;align-items:center}
+.vb-cont img{width:96px;flex:none;margin:-6px -4px -14px -6px}
+.vb-cont small{font-size:12px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
+.vb-cont b{display:block;font-size:18px;line-height:1.25;margin:2px 0 10px}
+.vb-cont .btn{padding:12px}
+.vb-h{margin:20px 16px 10px;font-weight:800;font-size:16px;display:flex;justify-content:space-between}
+.vb-h span{font-size:13px;color:var(--muted);font-weight:600}
+.vb-units{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 16px}
+.vb-u{border:2px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 0 var(--line);position:relative}
+.vb-u .ic{font-size:30px;line-height:1}
+.vb-u b{display:block;margin-top:8px;font-size:16px}
+.vb-u .ba{font-size:13px;color:var(--russet);font-weight:700}
+.vb-u .p{font-size:12px;color:var(--muted);margin-top:6px}
+.vb-ring{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800}
+.vb-ring:after{content:"";position:absolute;inset:5px;border-radius:50%;background:#fff}
+.vb-ring span{position:relative;z-index:1}
+.vb-u.lock{opacity:.5}
+.vb-u.wide{grid-column:1/-1;display:flex;gap:12px;align-items:center;background:#fffaf0;border-color:#f1dfbd;box-shadow:0 4px 0 #f1dfbd}
+.vb-u.wide b{margin:0}
+
+.vc-bar{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.vc-bar .x{font-size:22px;color:#9aa69a}
+.vc-track{flex:1;height:14px;border-radius:8px;background:#e6ebe3;overflow:hidden}
+.vc-track i{display:block;width:34%;height:100%;background:var(--green);border-radius:8px}
+.vc-lbl{margin:6px 16px 0;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.vc-title{margin:4px 16px 14px;font-size:21px;font-weight:800;line-height:1.25}
+.vc-say{display:flex;align-items:flex-end;gap:6px;margin:0 16px}
+.vc-say img{width:104px;flex:none;margin-bottom:-4px}
+.vc-bub{border:2px solid var(--line);border-radius:16px;padding:10px 14px;margin-bottom:26px;display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700}
+.vc-tts{flex:none;width:34px;height:34px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:15px;box-shadow:0 3px 0 var(--blue-d)}
+.vc-opts{margin:6px 16px 0;display:grid;gap:10px}
+.vc-o{border:2px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 0 var(--line);font-weight:600;display:flex;gap:12px;align-items:center}
+.vc-o i{font-style:normal;flex:none;width:24px;height:24px;border:2px solid var(--line);border-radius:7px;display:grid;place-items:center;font-size:12px;color:var(--muted);font-weight:800}
+.vc-o.sel{border-color:#7cc49a;background:#eaf6e2;box-shadow:0 3px 0 #7cc49a}
+.vc-o.sel i{border-color:#7cc49a;color:var(--green)}
+.vc-ok{margin:16px 0 0;background:#d9f2c7;padding:14px 16px 16px}
+.vc-ok b{color:var(--green-d);font-size:17px;display:block}
+.vc-ok p{margin:2px 0 12px;font-size:14px;color:var(--green-d)}
+.vc-flag{display:block;text-align:right;margin:-6px 0 10px;font-size:12px;color:var(--green-d);text-decoration:underline}
+
+.vd-hw{margin:14px 16px 0;border-radius:18px;background:var(--russet);color:#fff;padding:16px;box-shadow:0 5px 0 var(--russet-d);position:relative;overflow:hidden;min-height:150px}
+.vd-hw small{opacity:.85;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.vd-hw b{display:block;font-size:19px;margin:4px 0}
+.vd-hw p{margin:0 0 12px;font-size:13px;opacity:.92;max-width:200px}
+.vd-hw img{position:absolute;right:-10px;bottom:-30px;width:122px}
+.vd-hw .btn{width:auto;display:inline-block;padding:11px 18px;background:#fff;color:var(--russet);box-shadow:0 4px 0 #e7c9b8}
+.vd-league{margin:18px 16px 6px;display:flex;align-items:center;gap:12px}
+.vd-shield{width:46px;height:52px;background:var(--amber);clip-path:polygon(50% 0,100% 18%,100% 62%,50% 100%,0 62%,0 18%);display:grid;place-items:center;color:#fff;font-weight:800}
+.vd-league b{display:block;font-size:17px}
+.vd-league span{font-size:13px;color:var(--muted)}
+.vd-row{display:flex;align-items:center;gap:10px;margin:0 16px;padding:9px 6px;border-bottom:1px solid var(--line);font-size:14px}
+.vd-row .n{width:22px;font-weight:800;color:var(--muted);text-align:center}
+.vd-row .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+.vd-row .nm{flex:1;font-weight:600}
+.vd-row .xp{font-weight:800}
+.vd-me{background:#eaf6e2;border-radius:12px;border-bottom:0}
+.vd-zone{margin:6px 16px;font-size:12px;font-weight:800;color:var(--green);text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.vd-next{margin:14px 16px 0}
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="eyebrow">Ҙурбаш · исследование направлений</div>
+  <h1>Главный экран ученика</h1>
+  <p class="sub">Duolingo для башкирского: четыре компоновки экрана, который ученик видит после входа на сайт или в Telegram Mini App. Во всех вариантах главное — учёба. Проверка переводов живёт внутри упражнений: подпись «В переводе ошибка?» после ответа. Данные одинаковые: башкирский → русский, раздел «Знакомство», фразы из разговорника Bashkorttele.</p>
+  <div class="meta"><span>13 ноября 2026</span><span>ТЗ: задача 3 «Башкирская языковая школа»</span><span>GRILL-ME.md</span><span>Поверхность: главный экран, ширина Mini App</span></div>
+
+  <div class="grid">
+
+  <section class="var">
+    <div class="var-h"><div class="letter">A</div><h2>Дорожка уроков</h2></div>
+    <p class="trade">Самый узнаваемый Duolingo и понятный ответ на «что дальше». Почти не показывает, сколько разделов впереди и что задал учитель.</p>
+    <div class="phone"><div class="screen">
+      <div class="top"><span class="pair">ba → ru</span><span class="fire">🔥 4</span><span class="gem">⚡ 120 XP</span></div>
+      <div class="va-unit"><div><small>Раздел 1 · урок 2 из 2</small><b>Знакомство · Танышыу</b></div><div class="va-guide">📖</div></div>
+      <div class="va-path">
+        <div class="va-node va-done" style="left:150px;top:28px">✓</div>
+        <div class="va-node va-done" style="left:90px;top:116px">✓</div>
+        <div class="va-start" style="left:96px;top:194px">Начать</div>
+        <div class="va-node va-cur" style="left:110px;top:236px">★</div>
+        <div class="va-node va-lock" style="left:176px;top:330px">🔒</div>
+        <div class="va-node va-lock" style="left:132px;top:418px">🏆</div>
+        <img class="va-mascot" style="right:0;top:118px" src="../assets/mascot/poses-v1/idle.png" alt="Куница">
+      </div>
+      <div class="va-sep">дальше</div>
+      <div class="va-unit va-unit2"><div><small>Раздел 2</small><b>Семья · Ғаилә</b></div><div class="va-guide">🔒</div></div>
+    </div>
+    <div class="tabs"><div class="on"><i>🏠</i>Учиться</div><div><i>🍎</i>Задания</div><div><i>🏆</i>Лига</div><div><i>👤</i>Профиль</div></div></div>
+    <div class="analysis"><b>Что работает:</b> школьник сразу понимает механику, а 3 раздела по 2 урока из GRILL-ME ложатся на дорожку без доработок. <b>Риск:</b> визуально прямая копия Duolingo, своего характера даёт только куница. <b>Выбирать,</b> если нужен самый надёжный и привычный вариант.</div>
+  </section>
+
+  <section class="var">
+    <div class="var-h"><div class="letter">B</div><h2>Каталог тем</h2></div>
+    <p class="trade">Видна вся программа разом и удобно возвращаться к пройденным темам. Меньше ощущения игры и движения вперёд, чем у дорожки.</p>
+    <div class="phone"><div class="screen">
+      <div class="top"><span class="pair">ba → ru</span><span class="fire">🔥 4</span><span class="gem">⚡ 120 XP</span></div>
+      <div class="vb-cont"><img src="../assets/mascot/poses-v1/wave-out.png" alt="Куница машет"><div style="flex:1"><small>Продолжить</small><b>Знакомство · урок 2<br>«Как у вас дела?»</b><button class="btn btn-g">Продолжить</button></div></div>
+      <div class="vb-h">Разделы <span>1 из 3 открыт</span></div>
+      <div class="vb-units">
+        <div class="vb-u"><div class="vb-ring" style="background:conic-gradient(var(--green) 50%,#e6ebe3 0)"><span>1/2</span></div><div class="ic">👋</div><b>Знакомство</b><div class="ba">Танышыу</div><div class="p">Сәләм! · Һаумыһығыҙ!</div></div>
+        <div class="vb-u lock"><div class="vb-ring" style="background:#e6ebe3"><span>0/2</span></div><div class="ic">👪</div><b>Семья</b><div class="ba">Ғаилә</div><div class="p">Ғаиләгеҙ ни хәлдә?</div></div>
+        <div class="vb-u lock"><div class="vb-ring" style="background:#e6ebe3"><span>0/2</span></div><div class="ic">🏫</div><b>Школа</b><div class="ba">Мәктәп</div><div class="p">Скоро</div></div>
+        <div class="vb-u lock"><div class="vb-ring" style="background:#e6ebe3"><span>🔒</span></div><div class="ic">🎉</div><b>Праздники</b><div class="ba">Байрамдар</div><div class="p">Яңы йыл менән!</div></div>
+        <div class="vb-u wide"><div class="ic">☀️</div><div><b>Задание дня</b><div class="p" style="margin:0">5 фраз по вашему уровню · +20 XP</div></div></div>
+      </div>
+    </div>
+    <div class="tabs"><div class="on"><i>🏠</i>Учиться</div><div><i>🍎</i>Задания</div><div><i>🏆</i>Лига</div><div><i>👤</i>Профиль</div></div></div>
+    <div class="analysis"><b>Что работает:</b> учитель и ученик видят структуру курса, легко добавлять новые темы из датасета, а на сайте с широким экраном сетка смотрится естественно. <b>Риск:</b> «каталог» менее затягивает, чем путь, и для новичка выбор темы лишний. <b>Выбирать,</b> если важнее учебная программа, чем игра.</div>
+  </section>
+
+  <section class="var">
+    <div class="var-h"><div class="letter">C</div><h2>Урок сразу на главной</h2></div>
+    <p class="trade">Ноль кликов до учёбы: открыл и уже отвечаешь, а «В переводе ошибка?» видно в момент ответа. Карта прогресса и разделы уходят в отдельную вкладку.</p>
+    <div class="phone"><div class="screen">
+      <div class="vc-bar"><span class="x">✕</span><div class="vc-track"><i></i></div><span class="fire" style="font-weight:800">🔥 4</span></div>
+      <div class="vc-lbl">Знакомство · упражнение 2 из 6</div>
+      <div class="vc-title">Выберите перевод</div>
+      <div class="vc-say"><img src="../assets/mascot/poses-v1/explaining.png" alt="Куница говорит"><div class="vc-bub"><span class="vc-tts">🔊</span>Һеҙҙең хәлдәрегеҙ нисек?</div></div>
+      <div class="vc-opts">
+        <div class="vc-o"><i>1</i>Когда приехали?</div>
+        <div class="vc-o sel"><i>2</i>Как у вас дела?</div>
+        <div class="vc-o"><i>3</i>Как ваша семья?</div>
+      </div>
+      <div class="vc-ok"><b>✓ Отлично!</b><p>Һеҙҙең хәлдәрегеҙ нисек? — Как у вас дела?</p><a class="vc-flag">В переводе ошибка?</a><button class="btn btn-g">Дальше</button></div>
+    </div>
+    <div class="tabs"><div class="on"><i>▶️</i>Урок</div><div><i>🗺️</i>Путь</div><div><i>🏆</i>Лига</div><div><i>👤</i>Профиль</div></div></div>
+    <div class="analysis"><b>Что работает:</b> на демо жюри сразу видит упражнение, озвучку и проверку перевода в одном экране, и это тот же поток, что в боте <code>/daily</code>. <b>Риск:</b> нет «дома» с мотивацией и обзором, поэтому возвращаться может быть менее приятно. <b>Выбирать,</b> если важнее всего минимум действий из критериев ТЗ.</div>
+  </section>
+
+  <section class="var">
+    <div class="var-h"><div class="letter">D</div><h2>Лига класса</h2></div>
+    <p class="trade">Учёба через соревнование: задание учителя и недельная лига класса. Самостоятельному ученику без класса показать почти нечего.</p>
+    <div class="phone"><div class="screen">
+      <div class="top"><span class="pair">ba → ru</span><span class="fire">🔥 4</span><span class="gem">⚡ 120 XP</span></div>
+      <div class="vd-hw"><small>🍎 От учителя · 7 «Б»</small><b>Приветствия</b><p>8 карточек · до пятницы · выполнили 14 из 26</p><button class="btn">Начать</button><img src="../assets/mascot/poses-v1/success.png" alt="Куница радуется"></div>
+      <div class="vd-league"><div class="vd-shield">7Б</div><div><b>Лига класса · неделя</b><span>Осталось 3 дня · топ-3 получают бейдж</span></div></div>
+      <div class="vd-row"><span class="n">1</span><span class="av" style="background:#2f6fb5">А</span><span class="nm">Айсылу</span><span class="xp">640 XP</span></div>
+      <div class="vd-row"><span class="n">2</span><span class="av" style="background:#a8481f">Т</span><span class="nm">Тимур</span><span class="xp">515 XP</span></div>
+      <div class="vd-row vd-me"><span class="n">3</span><span class="av" style="background:#237a46">Я</span><span class="nm">Вы</span><span class="xp">480 XP</span></div>
+      <div class="vd-zone">▲ зона бейджа</div>
+      <div class="vd-row"><span class="n">4</span><span class="av" style="background:#dc941c">Л</span><span class="nm">Лилия</span><span class="xp">410 XP</span></div>
+      <div class="vd-next"><button class="btn btn-w">Продолжить урок · Знакомство</button></div>
+    </div>
+    <div class="tabs"><div class="on"><i>🏫</i>Класс</div><div><i>🗺️</i>Путь</div><div><i>🏆</i>Лига</div><div><i>👤</i>Профиль</div></div></div>
+    <div class="analysis"><b>Что работает:</b> закрывает пункт ТЗ 4.5 (классы, школы, рейтинги за неделю) и сценарий учителя из GRILL-ME. <b>Риск:</b> на демо нужны сид-данные учеников и учителя, а ученик без класса видит пустой экран. <b>Выбирать</b> как вкладку «Класс», а не главную для всех.</div>
+  </section>
+
+  </div>
+
+  <div class="decide">
+    <h2>Как выбрать</h2>
+    <ul>
+      <li>Нужен привычный и надёжный Duolingo → <b>A</b>.</li>
+      <li>Важнее видна программа курса и темы → <b>B</b>.</li>
+      <li>Важнее минимум действий и показать упражнение жюри за секунды → <b>C</b>.</li>
+      <li>Пилот идёт через школы и учителей → <b>D</b> как отдельная вкладка.</li>
+      <li>Сильная связка для демо: главная <b>A</b> (дорожка), сам урок как в <b>C</b>, вкладка «Класс» из <b>D</b>.</li>
+    </ul>
+  </div>
+  <p class="note">Фразы и ID настоящие (bashkorttele/trilingual-parallel-phrasebooks-bgpu, ba-ru-kk, 1 397 строк). XP, серия, класс, лига, названия разделов на башкирском и раздел «Праздники» придуманы; в манифесте помечены ❌. Манифест: zurbash-home.manifest.md</p>
+</main>
+</body>
+</html>
