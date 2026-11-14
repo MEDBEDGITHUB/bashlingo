@@ -111,11 +111,31 @@ npm run login-link -- "Гульшат Ринатовна"
 
 ## Развёртывание на сервере (Docker)
 
-Нужен сервер с Docker и открытыми портами 80 и 443. Настраивать HTTPS не нужно: в составе есть Caddy, он сам получает сертификат Let's Encrypt.
+Нужен сервер с Docker. Есть два варианта HTTPS:
+
+- **Порты 80 и 443 свободны**: запускайте с профилем `caddy`, он сам получает сертификат Let's Encrypt.
+- **80/443 заняты** (на сервере уже есть nginx и т. п.): запускайте без профиля. Сайт слушает `127.0.0.1:WEB_PORT`, а свой HTTPS вы проксируете на этот порт (пример ниже).
 
 ```bash
 cp .env.docker.example .env.docker   # заполнить пароли, токен бота и DOMAIN
+# с Caddy (порты 80 и 443 свободны):
+docker compose --env-file .env.docker --profile caddy up -d --build
+# или без Caddy (свой nginx/HTTPS), сайт на 127.0.0.1:WEB_PORT:
 docker compose --env-file .env.docker up -d --build
+```
+
+Пример для своего nginx (HTTPS через certbot):
+
+```nginx
+server {
+    server_name example.com;
+    listen 443 ssl;   # сертификат: certbot --nginx -d example.com
+    location / {
+        proxy_pass http://127.0.0.1:3000;   # ваш WEB_PORT
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}
 ```
 
 Поднимутся четыре контейнера: `db` (PostgreSQL), `web` (сайт, API и админка), `bot` и `caddy` (HTTPS на портах 80 и 443). Схема и курс применяются при каждом старте. Бот сам ставит кнопку меню Mini App на `https://DOMAIN`.

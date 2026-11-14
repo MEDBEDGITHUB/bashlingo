@@ -1,6 +1,8 @@
 # Запуск всего стека: docker compose up -d --build
 # Перед запуском: cp .env.docker.example .env.docker и заполнить значения (в том числе DOMAIN).
-# Снаружи открыты только порты 80 и 443 (Caddy, HTTPS); сайт слушает порт 3000 только внутри сети.
+# Сайт слушает 127.0.0.1:${WEB_PORT} (по умолчанию 3000), наружу он не торчит.
+# Свободны 80 и 443: запускайте с Caddy (он сам делает HTTPS):  docker compose --env-file .env.docker --profile caddy up -d --build
+# Заняты (например, свой nginx): запускайте без профиля и проксируйте свой HTTPS на 127.0.0.1:${WEB_PORT}.
 services:
   db:
     image: postgres:16-alpine
@@ -27,12 +29,13 @@ services:
       PUBLIC_URL: https://${DOMAIN}
     # схема и курс применяются при каждом старте (скрипт безопасен для повторного запуска)
     command: sh -c "node scripts/setup-db.mjs && npm start"
-    expose:
-      - "3000"
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
 
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
+    profiles: ["caddy"]
     depends_on:
       - web
     environment:
