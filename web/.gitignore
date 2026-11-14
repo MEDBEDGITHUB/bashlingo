@@ -4,3 +4,4 @@ node_modules/
 .pgdata/
 *.log
 .env.docker
+.run/
